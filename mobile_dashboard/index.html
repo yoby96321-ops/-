@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220">
+  <title>00403A 行情與預測</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--card:#111c2e;--muted:#9aabc3;--line:#24344e;--blue:#58a6ff;--orange:#ff9d4d;--green:#38c793}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf4ff;font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+    main{max-width:900px;margin:auto;padding:20px 14px 40px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 2px 18px}h1{font-size:25px;margin:0}h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}.status{color:var(--green);font-size:13px;text-align:right}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}.metric .label{color:var(--muted);font-size:13px}.metric .value{font-size:25px;font-weight:700;margin-top:3px}.metric .sub{font-size:12px;color:var(--muted)}
+    .callout{border-left:4px solid var(--blue)}.callout strong{font-size:17px}.chart{width:100%;height:340px}.note{font-size:12px;color:var(--muted);margin:4px 2px 0}.warn{color:#ffd27b}
+    @media(min-width:700px){main{padding-top:30px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.chart{height:420px}}
+  </style>
+</head>
+<body><main>
+  <header class="top"><div><h1>📈 00403A 行情與預測</h1><div class="muted" id="target">正在讀取資料…</div></div><div class="status" id="status">連線中</div></header>
+  <section class="grid">
+    <div class="card metric"><div class="label">最新股價</div><div class="value" id="price">—</div><div class="sub" id="quote-time">等待報價</div></div>
+    <div class="card metric"><div class="label">今日漲跌</div><div class="value" id="change">—</div><div class="sub">依前一收盤價計算</div></div>
+    <div class="card metric"><div class="label">今日估計成交量</div><div class="value" id="volume">—</div><div class="sub">元大 API 回傳單位</div></div>
+    <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
+  </section>
+  <section class="card callout"><div class="muted">方向參考</div><strong id="direction">尚無分析資料</strong><div class="note" id="model-note"></div></section>
+  <section class="card"><h2>今日預測與實際走勢</h2><div class="muted" id="compare-caption">預測線會與今日實際線一起更新</div><div id="compare-chart" class="chart"></div></section>
+  <section class="card"><h2>預測價格與成交量</h2><div class="muted" id="next-caption">依最近歷史相似交易日估算</div><div id="next-chart" class="chart"></div></section>
+  <p class="note warn">這是歷史資料模型的估算與行情展示，不是獲利保證或個人化投資建議。</p>
+  <p class="note" id="updated">—</p>
+</main>
+<script>
+function dataUrl(){
+  const parts=location.pathname.split('/').filter(Boolean); const owner=location.hostname.endsWith('.github.io')?location.hostname.slice(0,-10):'';
+  if(owner){const repo=parts[0]||`${owner}.github.io`;return `https://raw.githubusercontent.com/${owner}/${repo}/main/mobile_dashboard/data.json`;}
+  return new URL('./data.json',location.href).href;
+}
+const fmt = (v,n=2)=>Number.isFinite(Number(v))?Number(v).toFixed(n):'—';
+const fmtVol = v=>Number.isFinite(Number(v))?Math.round(Number(v)).toLocaleString('zh-TW'):'—';
+const chartLayout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'#cbd8ea',size:12},margin:{l:48,r:14,t:15,b:40},xaxis:{gridcolor:'#24344e',title:'時間'},yaxis:{gridcolor:'#24344e',title:'價格（元）'},legend:{orientation:'h',y:1.12},autosize:true};
+function draw(id,traces,layout){Plotly.react(id,traces,{...chartLayout,...layout},{responsive:true,displayModeBar:false});}
+async function refresh(){try{
+  const res=await fetch(dataUrl()+'?t='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('資料尚未發布'); const d=await res.json();
+  const q=d.latest_quote||{}; document.getElementById('price').textContent=fmt(q.price);
+  document.getElementById('quote-time').textContent=q.time?'報價時間：'+q.time:'尚無元大即時報價';
+  const pct=Number(d.today_change_pct);document.getElementById('change').textContent=Number.isFinite(pct)?(pct>=0?'+':'')+pct.toFixed(2)+'%':'—';
+  document.getElementById('volume').textContent=fmtVol(d.today_estimated_volume);
+  const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
+  document.getElementById('forecast-band').textContent=f.close_low!=null?`估計區間 ${fmt(f.close_low)}～${fmt(f.close_high)} 元`:'模型資料累積中';
+  document.getElementById('direction').textContent=d.direction_text||'目前資料不足';
+  document.getElementById('model-note').textContent=d.model_note||'';
+  document.getElementById('target').textContent=`預測日期：${f.target_date||'資料累積中'}　｜　標的：00403A`;
+  const c=d.comparison||{};document.getElementById('compare-caption').textContent=c.target_date?`${c.target_date} 前一交易日預測 vs 當日實際；資料更新時間 ${d.updated_at||'—'}`:'今日尚無可比較的昨日預測資料';
+  const cp=c.points||[];draw('compare-chart',[
+    {x:cp.map(x=>x.time),y:cp.map(x=>x.predicted),name:'昨日預測',mode:'lines',line:{color:'#58a6ff',width:3}},
+    {x:cp.map(x=>x.time),y:cp.map(x=>x.actual),name:'今日實際',mode:'lines',line:{color:'#ff9d4d',width:3}}
+  ],{yaxis:{...chartLayout.yaxis,title:'價格（元）'}});
+  const np=f.points||[]; document.getElementById('next-caption').textContent=f.sample_count?`使用 ${f.sample_count} 個相似歷史交易日；成交量為元大 API 回傳單位`:'等待足夠歷史資料';
+  draw('next-chart',[
+    {x:np.map(x=>x.time),y:np.map(x=>x.price),name:'預測價格中位數',mode:'lines',line:{color:'#58a6ff',width:3}},
+    {x:np.map(x=>x.time),y:np.map(x=>x.low),name:'偏低估計',mode:'lines',line:{color:'#58a6ff',width:1,dash:'dot'}},
+    {x:np.map(x=>x.time),y:np.map(x=>x.high),name:'偏高估計',mode:'lines',line:{color:'#58a6ff',width:1,dash:'dot'}},
+    {x:np.map(x=>x.time),y:np.map(x=>x.volume_cumulative),name:'預測累積量（右軸）',mode:'lines',yaxis:'y2',line:{color:'#38c793',width:2}}
+  ],{yaxis:{...chartLayout.yaxis,title:'價格（元）'},yaxis2:{title:'累積成交量',overlaying:'y',side:'right',showgrid:false,color:'#38c793'}});
+  document.getElementById('updated').textContent='資料更新時間：'+(d.updated_at||'尚無')+'　｜　網頁每 60 秒自動重讀';
+  document.getElementById('status').textContent='● 資料已載入';
+}catch(e){document.getElementById('status').textContent='資料暫時無法讀取';document.getElementById('model-note').textContent=e.message}}
+refresh();setInterval(refresh,60000);
+</script></body></html>
+
