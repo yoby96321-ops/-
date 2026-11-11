@@ -1,0 +1,12 @@
+{
+  "symbol": "00403A",
+  "updated_at": null,
+  "latest_quote": {},
+  "today_change_pct": null,
+  "today_estimated_volume": null,
+  "direction_text": "尚未連接資料發布程式",
+  "model_note": "首次執行本機發布程式並設定 GitHub 後，這裡會顯示行情與預測。",
+  "next_day_forecast": {"target_date": null, "sample_count": 0, "points": []},
+  "comparison": {"target_date": null, "points": []}
+}
+
