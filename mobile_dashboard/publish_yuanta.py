@@ -20,12 +20,13 @@ import pandas as pd
 import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
+PROJECT_DIR = ROOT / "股票"
 API_DIR = ROOT / "YuantaSparkAPI_win-x64_Python"
 HISTORY_FILE = ROOT / "data" / "00403A_yuanta_5m.csv"
 OUT_FILE = Path(__file__).resolve().parent / "data.json"
 TZ = ZoneInfo("Asia/Taipei")
 
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(PROJECT_DIR))
 from yuanta_readonly_feed import YuantaQuoteClient  # noqa: E402
 from next_day_model import predict_price_path  # noqa: E402
 
