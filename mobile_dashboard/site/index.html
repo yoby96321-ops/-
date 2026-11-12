@@ -42,7 +42,7 @@ function draw(id,traces,layout){Plotly.react(id,traces,{...chartLayout,...layout
 async function refresh(){try{
   const res=await fetch(dataUrl()+'?t='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('資料尚未發布'); const d=await res.json();
   const q=d.latest_quote||{}; document.getElementById('price').textContent=fmt(q.price);
-  document.getElementById('quote-time').textContent=q.time?'報價時間：'+q.time:'尚無元大即時報價';
+  document.getElementById('quote-time').textContent=q.time?`${q.source||'報價'}：${q.time}`:'尚無報價資料';
   const pct=Number(d.today_change_pct);document.getElementById('change').textContent=Number.isFinite(pct)?(pct>=0?'+':'')+pct.toFixed(2)+'%':'—';
   document.getElementById('volume').textContent=fmtVol(d.today_estimated_volume);
   const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
