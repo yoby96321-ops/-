@@ -4,7 +4,7 @@
 架構
 ----
 1. 家裡 Windows 電腦執行 publish_yuanta.py，使用元大 SPARK API 唯讀取得即時報價。
-2. 每分鐘收集一筆當日價格，每 5 分鐘把行情、預測曲線與比較資料更新到 GitHub 的 mobile_dashboard/data.json。
+2. 啟動時先發布最近收盤價與預測；盤中每分鐘收集價格，每 5 分鐘把行情、預測曲線與比較資料更新到 GitHub 的 mobile_dashboard/data.json。
 3. GitHub Pages 提供手機網頁。手機頁面每 60 秒讀一次最新 JSON。
 
 重要：GitHub Pages 這種公開網站任何人拿到網址都能看；目前頁面只發布 00403A 行情、預測和走勢，不發布你的元大帳密、持股或成本。不要把 API 密碼或 GitHub token 放進 repository。
