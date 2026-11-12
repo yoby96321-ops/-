@@ -1,6 +1,6 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-13 01:29:02 CST",
+  "updated_at": "2026-11-13 02:00:11 CST",
   "latest_quote": {
     "price": 9.1899995803833,
     "time": "2026-11-11 收盤",
@@ -11,7 +11,15 @@
   "today_change_pct": 0.0,
   "today_estimated_volume": null,
   "direction_text": "短線偏強，分批觀察；不要只依模型追價。",
-  "model_note": "預測使用歷史相似日模型；有效樣本 20 天。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 0 個完整交易日，目前修正 +0.000 元（至少 3 天後開始調整）。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "model_calibration": {
+    "validated_days": 0,
+    "required_days": 3,
+    "bias_per_share": 0.0,
+    "correction_per_share": 0.0,
+    "recent_mae": null
+  },
+  "calibration_history": [],
   "next_day_forecast": {
     "target_date": "2026-11-12",
     "sample_count": 20,
