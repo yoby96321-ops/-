@@ -19,10 +19,10 @@
 
 本機發布器
 ----------
-1. 確認原本專案的 data/00403A_yuanta_5m.csv 已下載到至少 20 個完整交易日，並保留 YuantaSparkAPI_win-x64_Python 元件。
+1. 保持以下相對資料夾結構：股票/（主程式與模型）、data/00403A_yuanta_5m.csv（歷史資料）、YuantaSparkAPI_win-x64_Python/（元大元件）。確認歷史檔至少有 20 個完整交易日。
 2. 安裝 Python 3.11、pythonnet、pandas、numpy、yfinance（原本主程式已安裝的套件可沿用）。
 3. 建立 fine-grained GitHub token，只授權該 repository 的 Contents: Read and write。Token 只在發布器執行時輸入，不要貼到聊天或程式檔。
-4. 執行本資料夾的 啟動手機資料發布器.bat，依提示填 repository（owner/name）、GitHub token、元大 API 帳號和密碼。
+4. 執行專案根目錄 mobile_dashboard/ 裡的 啟動手機資料發布器.bat，依提示填 repository（owner/name）、GitHub token、元大 API 帳號和密碼。
 5. 黑色視窗需保持開啟、電腦需保持開機和連網；按 Ctrl+C 停止。
 
 限制
