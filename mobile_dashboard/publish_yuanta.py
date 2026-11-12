@@ -163,9 +163,13 @@ def main() -> None:
                     "price": float(quote["price"]),
                 }
 
-            # Only publish every five minutes to limit repository commits.
+            # Publish a closing-price snapshot immediately on first launch, even
+            # outside market hours. After that, publish live quotes every five
+            # minutes so the mobile page never stays on the empty placeholder.
             slot = now.strftime("%Y-%m-%d %H:%M")
-            if now.minute % 5 == 0 and slot != published_for and quote.get("price"):
+            first_publish = published_for is None
+            live_publish = now.minute % 5 == 0 and slot != published_for and bool(quote.get("price"))
+            if first_publish or live_publish:
                 published_for = slot
                 # Exclude today's unfinished Yahoo daily candle during the session.
                 model_daily = daily.copy()
@@ -196,7 +200,8 @@ def main() -> None:
                 else:
                     forecast_json = {"target_date": None, "sample_count": int(sample_count), "points": []}
 
-                current_price = float(quote["price"])
+                current_price = float(quote.get("price") or model_daily["Close"].iloc[-1])
+                quote_source = "元大 SPARK 即時行情" if quote.get("price") else "最近收盤價（Yahoo Finance）"
                 # Intraday actual-price points are quote snapshots, sampled each minute.
                 points_today = [
                     {"time": item["time"], "actual": float(item["price"])}
@@ -222,7 +227,17 @@ def main() -> None:
                 response = {
                     "symbol": "00403A",
                     "updated_at": now.strftime("%Y-%m-%d %H:%M:%S %Z"),
-                    "latest_quote": {"price": current_price, "time": now.strftime("%Y-%m-%d %H:%M:%S"), "bid": quote.get("bid"), "ask": quote.get("ask")},
+                    "latest_quote": {
+                        "price": current_price,
+                        "time": (
+                            now.strftime("%Y-%m-%d %H:%M:%S")
+                            if quote.get("price")
+                            else pd.Timestamp(model_daily.index[-1]).strftime("%Y-%m-%d 收盤")
+                        ),
+                        "source": quote_source,
+                        "bid": quote.get("bid"),
+                        "ask": quote.get("ask"),
+                    },
                     "today_change_pct": change_pct,
                     "today_estimated_volume": quote.get("volume"),
                     "direction_text": direction_text(current_price, float(daily["Close"].tail(5).mean()), None),
@@ -235,7 +250,7 @@ def main() -> None:
                 publish(repo, token, response)
                 OUT_FILE.write_text(json.dumps(response, ensure_ascii=False, indent=2), encoding="utf-8")
                 remote = response
-                print(f"{response['updated_at']} 已發布，最新價 {current_price:.2f} 元")
+                print(f"{response['updated_at']} 已發布，{quote_source}：{current_price:.2f} 元")
             time.sleep(10)
     except KeyboardInterrupt:
         print("\n已停止發布。")
