@@ -45,6 +45,15 @@ def github_request(url: str, token: str, method: str = "GET", body: dict | None 
             raw = response.read()
             return json.loads(raw.decode("utf-8")) if raw else {}
     except urllib.error.HTTPError as exc:
+        if exc.code == 401:
+            raise RuntimeError(
+                "GitHub token 無效或已過期。請重新建立 Fine-grained token，確認 Resource owner 是 yoby96321-ops、"
+                "Repository access 選到 '-'，並授予 Contents: Read and write。"
+            ) from None
+        if exc.code == 403:
+            raise RuntimeError(
+                "GitHub token 沒有這個 repository 的 Contents 讀寫權限；請檢查 Fine-grained token 的 repository 與權限設定。"
+            ) from None
         detail = exc.read().decode("utf-8", errors="replace")[:300]
         raise RuntimeError(f"GitHub 回應 {exc.code}：{detail}") from None
 
@@ -129,11 +138,14 @@ def main() -> None:
     if "/" not in repo:
         raise SystemExit("Repository 格式錯誤，請填 owner/name。")
     token = getpass.getpass("GitHub Fine-grained token（只存在本次執行記憶體）：").strip()
+    try:
+        remote = read_remote(repo, token)
+        history = load_history()
+        daily = build_daily(history)
+    except Exception as exc:
+        raise SystemExit(f"初始化失敗：{exc}") from None
     account = input("元大 API 帳號：").strip()
     password = getpass.getpass("元大證券登入密碼（不會寫入檔案）：")
-    history = load_history()
-    daily = build_daily(history)
-    remote = read_remote(repo, token)
     client = YuantaQuoteClient(API_DIR)
     try:
         print("正在登入元大 API…")
