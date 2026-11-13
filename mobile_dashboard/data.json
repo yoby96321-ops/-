@@ -1,6 +1,6 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-13 16:30:49 CST",
+  "updated_at": "2026-11-13 16:39:40 CST",
   "latest_quote": {
     "price": 9.020000457763672,
     "time": "2026-11-13 收盤",
@@ -410,7 +410,549 @@
   "comparison_forecast": {},
   "comparison": {
     "target_date": "2026-11-13",
-    "points": []
+    "points": [
+      {
+        "time": "09:05",
+        "predicted": null,
+        "actual": 9.19
+      },
+      {
+        "time": "09:10",
+        "predicted": null,
+        "actual": 9.24
+      },
+      {
+        "time": "09:15",
+        "predicted": null,
+        "actual": 9.24
+      },
+      {
+        "time": "09:20",
+        "predicted": null,
+        "actual": 9.27
+      },
+      {
+        "time": "09:25",
+        "predicted": null,
+        "actual": 9.29
+      },
+      {
+        "time": "09:30",
+        "predicted": null,
+        "actual": 9.26
+      },
+      {
+        "time": "09:35",
+        "predicted": null,
+        "actual": 9.29
+      },
+      {
+        "time": "09:40",
+        "predicted": null,
+        "actual": 9.27
+      },
+      {
+        "time": "09:45",
+        "predicted": null,
+        "actual": 9.25
+      },
+      {
+        "time": "09:50",
+        "predicted": null,
+        "actual": 9.24
+      },
+      {
+        "time": "09:55",
+        "predicted": null,
+        "actual": 9.28
+      },
+      {
+        "time": "10:00",
+        "predicted": null,
+        "actual": 9.28
+      },
+      {
+        "time": "10:05",
+        "predicted": null,
+        "actual": 9.29
+      },
+      {
+        "time": "10:10",
+        "predicted": null,
+        "actual": 9.28
+      },
+      {
+        "time": "10:15",
+        "predicted": null,
+        "actual": 9.24
+      },
+      {
+        "time": "10:20",
+        "predicted": null,
+        "actual": 9.2
+      },
+      {
+        "time": "10:25",
+        "predicted": null,
+        "actual": 9.17
+      },
+      {
+        "time": "10:30",
+        "predicted": null,
+        "actual": 9.21
+      },
+      {
+        "time": "10:35",
+        "predicted": null,
+        "actual": 9.21
+      },
+      {
+        "time": "10:40",
+        "predicted": null,
+        "actual": 9.22
+      },
+      {
+        "time": "10:45",
+        "predicted": null,
+        "actual": 9.2
+      },
+      {
+        "time": "10:50",
+        "predicted": null,
+        "actual": 9.17
+      },
+      {
+        "time": "10:55",
+        "predicted": null,
+        "actual": 9.15
+      },
+      {
+        "time": "11:00",
+        "predicted": null,
+        "actual": 9.14
+      },
+      {
+        "time": "11:05",
+        "predicted": null,
+        "actual": 9.17
+      },
+      {
+        "time": "11:10",
+        "predicted": null,
+        "actual": 9.14
+      },
+      {
+        "time": "11:15",
+        "predicted": null,
+        "actual": 9.13
+      },
+      {
+        "time": "11:20",
+        "predicted": null,
+        "actual": 9.15
+      },
+      {
+        "time": "11:25",
+        "predicted": null,
+        "actual": 9.13
+      },
+      {
+        "time": "11:30",
+        "predicted": null,
+        "actual": 9.14
+      },
+      {
+        "time": "11:35",
+        "predicted": null,
+        "actual": 9.13
+      },
+      {
+        "time": "11:40",
+        "predicted": null,
+        "actual": 9.14
+      },
+      {
+        "time": "11:45",
+        "predicted": null,
+        "actual": 9.12
+      },
+      {
+        "time": "11:50",
+        "predicted": null,
+        "actual": 9.1
+      },
+      {
+        "time": "11:55",
+        "predicted": null,
+        "actual": 9.04
+      },
+      {
+        "time": "12:00",
+        "predicted": null,
+        "actual": 9.03
+      },
+      {
+        "time": "12:05",
+        "predicted": null,
+        "actual": 9.05
+      },
+      {
+        "time": "12:10",
+        "predicted": null,
+        "actual": 9.05
+      },
+      {
+        "time": "12:15",
+        "predicted": null,
+        "actual": 9.01
+      },
+      {
+        "time": "12:20",
+        "predicted": null,
+        "actual": 9.04
+      },
+      {
+        "time": "12:25",
+        "predicted": null,
+        "actual": 9.05
+      },
+      {
+        "time": "12:30",
+        "predicted": null,
+        "actual": 9.07
+      },
+      {
+        "time": "12:35",
+        "predicted": null,
+        "actual": 9.08
+      },
+      {
+        "time": "12:40",
+        "predicted": null,
+        "actual": 9.05
+      },
+      {
+        "time": "12:45",
+        "predicted": null,
+        "actual": 9.03
+      },
+      {
+        "time": "12:50",
+        "predicted": null,
+        "actual": 9.03
+      },
+      {
+        "time": "12:55",
+        "predicted": null,
+        "actual": 9.02
+      },
+      {
+        "time": "13:00",
+        "predicted": null,
+        "actual": 9.01
+      },
+      {
+        "time": "13:05",
+        "predicted": null,
+        "actual": 9.03
+      },
+      {
+        "time": "13:10",
+        "predicted": null,
+        "actual": 9.04
+      },
+      {
+        "time": "13:15",
+        "predicted": null,
+        "actual": 9.04
+      },
+      {
+        "time": "13:20",
+        "predicted": null,
+        "actual": 9.01
+      },
+      {
+        "time": "13:25",
+        "predicted": null,
+        "actual": 9.01
+      },
+      {
+        "time": "13:30",
+        "predicted": null,
+        "actual": 9.02
+      }
+    ]
   },
-  "today_actual_points": []
+  "today_actual_points": [
+    {
+      "time": "09:05",
+      "actual": 9.19,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:10",
+      "actual": 9.24,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:15",
+      "actual": 9.24,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:20",
+      "actual": 9.27,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:25",
+      "actual": 9.29,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:30",
+      "actual": 9.26,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:35",
+      "actual": 9.29,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:40",
+      "actual": 9.27,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:45",
+      "actual": 9.25,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:50",
+      "actual": 9.24,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "09:55",
+      "actual": 9.28,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:00",
+      "actual": 9.28,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:05",
+      "actual": 9.29,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:10",
+      "actual": 9.28,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:15",
+      "actual": 9.24,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:20",
+      "actual": 9.2,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:25",
+      "actual": 9.17,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:30",
+      "actual": 9.21,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:35",
+      "actual": 9.21,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:40",
+      "actual": 9.22,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:45",
+      "actual": 9.2,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:50",
+      "actual": 9.17,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "10:55",
+      "actual": 9.15,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:00",
+      "actual": 9.14,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:05",
+      "actual": 9.17,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:10",
+      "actual": 9.14,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:15",
+      "actual": 9.13,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:20",
+      "actual": 9.15,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:25",
+      "actual": 9.13,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:30",
+      "actual": 9.14,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:35",
+      "actual": 9.13,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:40",
+      "actual": 9.14,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:45",
+      "actual": 9.12,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:50",
+      "actual": 9.1,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "11:55",
+      "actual": 9.04,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:00",
+      "actual": 9.03,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:05",
+      "actual": 9.05,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:10",
+      "actual": 9.05,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:15",
+      "actual": 9.01,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:20",
+      "actual": 9.04,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:25",
+      "actual": 9.05,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:30",
+      "actual": 9.07,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:35",
+      "actual": 9.08,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:40",
+      "actual": 9.05,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:45",
+      "actual": 9.03,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:50",
+      "actual": 9.03,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "12:55",
+      "actual": 9.02,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:00",
+      "actual": 9.01,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:05",
+      "actual": 9.03,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:10",
+      "actual": 9.04,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:15",
+      "actual": 9.04,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:20",
+      "actual": 9.01,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:25",
+      "actual": 9.01,
+      "date": "2026-11-13"
+    },
+    {
+      "time": "13:30",
+      "actual": 9.02,
+      "date": "2026-11-13"
+    }
+  ]
 }
