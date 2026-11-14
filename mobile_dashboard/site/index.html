@@ -11,12 +11,13 @@
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf4ff;font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
     main{max-width:900px;margin:auto;padding:20px 14px 40px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 2px 18px}h1{font-size:25px;margin:0}h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}.status{color:var(--green);font-size:13px;text-align:right}
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}.metric .label{color:var(--muted);font-size:13px}.metric .value{font-size:25px;font-weight:700;margin-top:3px}.metric .sub{font-size:12px;color:var(--muted)}
+    .age{display:block;color:var(--muted);font-size:12px;margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .callout{border-left:4px solid var(--blue)}.callout strong{font-size:17px}.chart{width:100%;height:340px}.note{font-size:12px;color:var(--muted);margin:4px 2px 0}.warn{color:#ffd27b}
     @media(min-width:700px){main{padding-top:30px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.chart{height:420px}}
   </style>
 </head>
 <body><main>
-  <header class="top"><div><h1>📈 00403A 行情與預測</h1><div class="muted" id="target">正在讀取資料…</div></div><div class="status" id="status">連線中</div></header>
+  <header class="top"><div><h1>📈 00403A 行情與預測</h1><div class="muted" id="target">正在讀取資料…</div></div><div class="status"><span id="status">● 連線中</span><span class="age" id="update-age">資料更新計時中…</span></div></header>
   <section class="grid">
     <div class="card metric"><div class="label">最新股價</div><div class="value" id="price">—</div><div class="sub" id="quote-time">等待報價</div></div>
     <div class="card metric"><div class="label">今日漲跌</div><div class="value" id="change">—</div><div class="sub">依前一收盤價計算</div></div>
@@ -37,10 +38,27 @@ function dataUrl(){
 }
 const fmt = (v,n=2)=>Number.isFinite(Number(v))?Number(v).toFixed(n):'—';
 const fmtVol = v=>Number.isFinite(Number(v))?Math.round(Number(v)).toLocaleString('zh-TW'):'—';
+let publishedAtMs=null;
+function parsePublishedAt(data){
+  const epoch=Number(data.updated_at_epoch);
+  if(Number.isFinite(epoch)&&epoch>0)return epoch*1000;
+  const m=String(data.updated_at||'').match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/);
+  if(!m)return null;
+  const parsed=Date.parse(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}+08:00`);
+  return Number.isFinite(parsed)?parsed:null;
+}
+function renderUpdateAge(){
+  const el=document.getElementById('update-age');
+  if(publishedAtMs===null){el.textContent='尚無更新時間';return;}
+  const total=Math.max(0,Math.floor((Date.now()-publishedAtMs)/1000));
+  const hours=Math.floor(total/3600),minutes=Math.floor((total%3600)/60),seconds=total%60;
+  el.textContent=hours?`距資料更新 ${hours}小時 ${minutes}分 ${seconds}秒`:minutes?`距資料更新 ${minutes}分 ${seconds}秒`:`距資料更新 ${seconds}秒`;
+}
 const chartLayout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'#cbd8ea',size:12},margin:{l:48,r:14,t:15,b:40},xaxis:{gridcolor:'#24344e',title:'時間'},yaxis:{gridcolor:'#24344e',title:'價格（元）'},legend:{orientation:'h',y:1.12},autosize:true};
 function draw(id,traces,layout){Plotly.react(id,traces,{...chartLayout,...layout},{responsive:true,displayModeBar:false});}
 async function refresh(){try{
   const res=await fetch(dataUrl()+'?t='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('資料尚未發布'); const d=await res.json();
+  publishedAtMs=parsePublishedAt(d);renderUpdateAge();
   const q=d.latest_quote||{}; document.getElementById('price').textContent=fmt(q.price);
   document.getElementById('quote-time').textContent=q.time?`${q.source||'報價'}：${q.time}`:'尚無報價資料';
   const pct=Number(d.today_change_pct);document.getElementById('change').textContent=Number.isFinite(pct)?(pct>=0?'+':'')+pct.toFixed(2)+'%':'—';
@@ -65,6 +83,6 @@ async function refresh(){try{
   document.getElementById('updated').textContent='資料更新時間：'+(d.updated_at||'尚無')+'　｜　網頁每 60 秒自動重讀';
   document.getElementById('status').textContent='● 資料已載入';
 }catch(e){document.getElementById('status').textContent='資料暫時無法讀取';document.getElementById('model-note').textContent=e.message}}
-refresh();setInterval(refresh,60000);
+refresh();setInterval(refresh,60000);setInterval(renderUpdateAge,1000);
 </script></body></html>
 
