@@ -25,8 +25,7 @@
     <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
   </section>
   <section class="card callout"><div class="muted">方向參考</div><strong id="direction">尚無分析資料</strong><div class="note" id="model-note"></div></section>
-  <section class="card"><h2>今日預測與實際走勢</h2><div class="muted" id="compare-caption">預測線會與今日實際線一起更新</div><div id="compare-chart" class="chart"></div></section>
-  <section class="card"><h2>預測價格與成交量</h2><div class="muted" id="next-caption">依最近歷史相似交易日估算</div><div id="next-chart" class="chart"></div></section>
+  <section class="card"><h2>股價走勢與預測</h2><div class="muted" id="compare-caption">實際價格、前一交易日預測與下一交易日預測會依日期疊在同一張圖</div><div id="compare-chart" class="chart"></div></section>
   <p class="note warn">這是歷史資料模型的估算與行情展示，不是獲利保證或個人化投資建議。</p>
   <p class="note" id="updated">—</p>
 </main>
@@ -68,18 +67,24 @@ async function refresh(){try{
   document.getElementById('direction').textContent=d.direction_text||'目前資料不足';
   document.getElementById('model-note').textContent=d.model_note||'';
   document.getElementById('target').textContent=`預測日期：${f.target_date||'資料累積中'}　｜　標的：00403A`;
-  const c=d.comparison||{};document.getElementById('compare-caption').textContent=c.target_date?`${c.target_date} 前一交易日預測 vs 當日實際；資料更新時間 ${d.updated_at||'—'}`:'今日尚無可比較的昨日預測資料';
-  const cp=c.points||[];draw('compare-chart',[
-    {x:cp.map(x=>x.time),y:cp.map(x=>x.predicted),name:'昨日預測',mode:'lines',line:{color:'#58a6ff',width:3}},
-    {x:cp.map(x=>x.time),y:cp.map(x=>x.actual),name:'今日實際',mode:'lines',line:{color:'#ff9d4d',width:3}}
-  ],{yaxis:{...chartLayout.yaxis,title:'價格（元）'}});
-  const np=f.points||[]; document.getElementById('next-caption').textContent=f.sample_count?`使用 ${f.sample_count} 個相似歷史交易日；成交量為元大 API 回傳單位`:'等待足夠歷史資料';
-  draw('next-chart',[
-    {x:np.map(x=>x.time),y:np.map(x=>x.price),name:'預測價格中位數',mode:'lines',line:{color:'#58a6ff',width:3}},
-    {x:np.map(x=>x.time),y:np.map(x=>x.low),name:'偏低估計',mode:'lines',line:{color:'#58a6ff',width:1,dash:'dot'}},
-    {x:np.map(x=>x.time),y:np.map(x=>x.high),name:'偏高估計',mode:'lines',line:{color:'#58a6ff',width:1,dash:'dot'}},
-    {x:np.map(x=>x.time),y:np.map(x=>x.volume_cumulative),name:'預測累積量（右軸）',mode:'lines',yaxis:'y2',line:{color:'#38c793',width:2}}
-  ],{yaxis:{...chartLayout.yaxis,title:'價格（元）'},yaxis2:{title:'累積成交量',overlaying:'y',side:'right',showgrid:false,color:'#38c793'}});
+  const c=d.comparison||{},cp=c.points||[],np=f.points||[];
+  const at=(day,clock)=>day&&clock?`${day} ${clock}:00`:null;
+  const caption=[];
+  if(c.target_date)caption.push(`${c.target_date}：前一交易日預測與當日實際`);
+  if(f.target_date)caption.push(`${f.target_date}：下一交易日預測`);
+  if(f.sample_count)caption.push(`預測參考 ${f.sample_count} 個歷史相似交易日`);
+  document.getElementById('compare-caption').textContent=(caption.length?caption.join('；'):'等待足夠資料')+`；資料更新 ${d.updated_at||'—'}`;
+  const traces=[];
+  if(cp.length){
+    traces.push({x:cp.map(x=>at(c.target_date,x.time)),y:cp.map(x=>x.predicted),name:`${c.target_date||'前一交易日'}預測`,mode:'lines',line:{color:'#58a6ff',width:3}});
+    traces.push({x:cp.map(x=>at(c.target_date,x.time)),y:cp.map(x=>x.actual),name:`${c.target_date||'當日'}實際`,mode:'lines',line:{color:'#ff9d4d',width:3}});
+  }
+  if(np.length){
+    traces.push({x:np.map(x=>at(f.target_date,x.time)),y:np.map(x=>x.high),name:'下一交易日預測區間上緣',mode:'lines',connectgaps:false,line:{color:'#58a6ff',width:1,dash:'dot'}});
+    traces.push({x:np.map(x=>at(f.target_date,x.time)),y:np.map(x=>x.low),name:'下一交易日預測區間下緣',mode:'lines',connectgaps:false,line:{color:'#58a6ff',width:1,dash:'dot'}});
+    traces.push({x:np.map(x=>at(f.target_date,x.time)),y:np.map(x=>x.price),name:`${f.target_date||'下一交易日'}預測中位數`,mode:'lines',line:{color:'#38c793',width:3,dash:'dash'}});
+  }
+  draw('compare-chart',traces,{xaxis:{gridcolor:'#24344e',title:'日期與時間',tickformat:'%m/%d<br>%H:%M'},yaxis:{...chartLayout.yaxis,title:'價格（元）'}});
   document.getElementById('updated').textContent='資料更新時間：'+(d.updated_at||'尚無')+'　｜　網頁每 60 秒自動重讀';
   document.getElementById('status').textContent='● 資料已載入';
 }catch(e){document.getElementById('status').textContent='資料暫時無法讀取';document.getElementById('model-note').textContent=e.message}}
