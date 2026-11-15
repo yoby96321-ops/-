@@ -12,7 +12,7 @@
     main{max-width:900px;margin:auto;padding:20px 14px 40px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 2px 18px}h1{font-size:25px;margin:0}h2{font-size:18px;margin:0 0 12px}.muted{color:var(--muted);font-size:13px}.status{color:var(--green);font-size:13px;text-align:right}
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}.metric .label{color:var(--muted);font-size:13px}.metric .value{font-size:25px;font-weight:700;margin-top:3px}.metric .sub{font-size:12px;color:var(--muted)}
     .age{display:block;color:var(--muted);font-size:12px;margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
-    .callout{border-left:4px solid var(--blue)}.callout strong{font-size:17px}.chart{width:100%;height:340px}.chart-small{width:100%;height:210px}.note{font-size:12px;color:var(--muted);margin:4px 2px 0}.warn{color:#ffd27b}
+    .callout{border-left:4px solid var(--blue)}.callout strong{font-size:17px}.chart{width:100%;height:340px}.chart-small{width:100%;height:210px}.note{font-size:12px;color:var(--muted);margin:4px 2px 0}.warn{color:#ffd27b}.confidence{display:inline-block;border:1px solid #49617f;border-radius:999px;padding:3px 10px;color:#d9e8ff;font-size:13px;margin:0 0 8px}.reasons{padding-left:20px;margin:8px 0;color:#d6e2f2;font-size:14px}.reasons li{margin:5px 0}.decision{font-weight:700;font-size:16px;margin:4px 0}
     @media(min-width:700px){main{padding-top:30px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.chart{height:420px}}
   </style>
 </head>
@@ -24,7 +24,8 @@
     <div class="card metric"><div class="label">今日估計成交量</div><div class="value" id="volume">—</div><div class="sub">元大 API 回傳單位</div></div>
     <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
   </section>
-  <section class="card callout"><div class="muted">方向參考</div><strong id="direction">尚無分析資料</strong><div class="note" id="model-note"></div></section>
+  <section class="card callout"><div class="muted">目前採用的模型</div><strong>歷史相似交易日</strong><div class="note" id="model-note"></div></section>
+  <section class="card"><h2>預測信心與操作理由</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">信心會依歷史預測誤差和樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">這是依模型、均線、MACD 的條件式觀察，不含你的資金需求、交易成本、ETF 折溢價或持倉狀況；請勿單靠此訊號下單。</div></section>
   <section class="card"><h2>股價走勢與預測</h2><div class="muted" id="compare-caption">實際價格、前一交易日預測與下一交易日預測會依日期疊在同一張圖</div><div id="compare-chart" class="chart"></div></section>
   <section class="card"><h2>K 線、成交量與 MACD</h2><div class="muted" id="technical-caption">使用元大歷史 5 分 K 合併日 K；含 MA5/MA20、MACD(12,26,9)、RSI14。ETF 淨值、折溢價與持倉目前未接入。</div><div id="kline-chart" class="chart"></div><div id="macd-chart" class="chart-small"></div><div class="note" id="technical-summary">等待技術分析資料</div></section>
   <p class="note warn">這是歷史資料模型的估算與行情展示，不是獲利保證或個人化投資建議。</p>
@@ -65,8 +66,13 @@ async function refresh(){try{
   document.getElementById('volume').textContent=fmtVol(d.today_estimated_volume);
   const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
   document.getElementById('forecast-band').textContent=f.close_low!=null?`估計區間 ${fmt(f.close_low)}～${fmt(f.close_high)} 元`:'模型資料累積中';
-  document.getElementById('direction').textContent=d.direction_text||'目前資料不足';
   document.getElementById('model-note').textContent=d.model_note||'';
+  const a=d.analysis||{};
+  document.getElementById('confidence-level').textContent=`信心參考：${a.confidence_level||'尚無資料'}`;
+  document.getElementById('confidence-note').textContent=a.confidence_note||'等發布器更新預測與回測資料後顯示。';
+  document.getElementById('analysis-stance').textContent=a.stance||'資料不足，暫不提供方向參考。';
+  const reasonList=document.getElementById('analysis-reasons');reasonList.replaceChildren();
+  (a.reasons||[]).forEach(reason=>{const item=document.createElement('li');item.textContent=reason;reasonList.appendChild(item);});
   document.getElementById('target').textContent=`預測日期：${f.target_date||'資料累積中'}　｜　標的：00403A`;
   const c=d.comparison||{},cp=c.points||[],np=f.points||[];
   const at=(day,clock)=>day&&clock?`${day} ${clock}:00`:null;
