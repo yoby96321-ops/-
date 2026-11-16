@@ -1,10 +1,10 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-16 23:10:03 CST",
-  "updated_at_epoch": 1794841803,
+  "updated_at": "2026-11-16 23:15:06 CST",
+  "updated_at_epoch": 1794842106,
   "latest_quote": {
     "price": 8.3,
-    "time": "2026-11-16 23:10:03",
+    "time": "2026-11-16 23:15:06",
     "source": "元大 SPARK 即時行情",
     "bid": 8.3,
     "ask": 8.31
