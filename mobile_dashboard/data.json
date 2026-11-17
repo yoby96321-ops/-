@@ -1,16 +1,16 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-17 09:55:09 CST",
-  "updated_at_epoch": 1794880509,
+  "updated_at": "2026-11-17 10:00:02 CST",
+  "updated_at_epoch": 1794880802,
   "latest_quote": {
     "price": 8.0,
-    "time": "2026-11-17 09:55:09",
+    "time": "2026-11-17 09:59:56",
     "source": "元大 SPARK 即時行情",
-    "bid": 8.0,
-    "ask": 8.01
+    "bid": 7.99,
+    "ask": 8.0
   },
   "today_change_pct": -3.6144600462750365,
-  "today_estimated_volume": 132063,
+  "today_estimated_volume": 138589,
   "direction_text": "短線偏弱，留意風險；依自己的計畫決定是否減碼。",
   "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 1 個完整交易日，目前修正 +0.000 元（至少 3 天後開始調整）。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
@@ -1097,6 +1097,26 @@
         "time": "09:55",
         "predicted": 8.332197473940717,
         "actual": 8.01
+      },
+      {
+        "time": "09:56",
+        "predicted": null,
+        "actual": 8.0
+      },
+      {
+        "time": "09:57",
+        "predicted": null,
+        "actual": 8.0
+      },
+      {
+        "time": "09:58",
+        "predicted": null,
+        "actual": 7.99
+      },
+      {
+        "time": "09:59",
+        "predicted": null,
+        "actual": 8.0
       },
       {
         "time": "10:00",
@@ -3300,6 +3320,26 @@
       "time": "09:54",
       "actual": 8.01,
       "date": "2026-11-17"
+    },
+    {
+      "time": "09:56",
+      "actual": 8.0,
+      "date": "2026-11-17"
+    },
+    {
+      "time": "09:57",
+      "actual": 8.0,
+      "date": "2026-11-17"
+    },
+    {
+      "time": "09:58",
+      "actual": 7.99,
+      "date": "2026-11-17"
+    },
+    {
+      "time": "09:59",
+      "actual": 8.0,
+      "date": "2026-11-17"
     }
   ],
   "technical_analysis": {
@@ -4208,7 +4248,7 @@
         "high": 8.3,
         "low": 7.93,
         "close": 8.0,
-        "volume": 119529.0,
+        "volume": 138589.0,
         "ma5": 8.652000000000001,
         "ma20": 9.273,
         "macd": -0.5366792771494673,
