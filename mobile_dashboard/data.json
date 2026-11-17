@@ -1,16 +1,16 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-17 12:15:01 CST",
-  "updated_at_epoch": 1794888901,
+  "updated_at": "2026-11-17 12:20:04 CST",
+  "updated_at_epoch": 1794889204,
   "latest_quote": {
-    "price": 7.96,
-    "time": "2026-11-17 12:15:00",
+    "price": 7.94,
+    "time": "2026-11-17 12:20:03",
     "source": "元大 SPARK 即時行情",
-    "bid": 7.95,
-    "ask": 7.96
+    "bid": 7.93,
+    "ask": 7.94
   },
-  "today_change_pct": -4.0963877460436615,
-  "today_estimated_volume": 232884,
+  "today_change_pct": -4.337351595927963,
+  "today_estimated_volume": 245552,
   "direction_text": "短線偏弱，留意風險；依自己的計畫決定是否減碼。",
   "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 1 個完整交易日，目前修正 +0.000 元（至少 3 天後開始調整）。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
@@ -423,8 +423,8 @@
     "reasons": [
       "模型估計收盤中位數 8.34 元，相對參考收盤 8.30 元約 +0.45%；估計區間 8.17～8.48 元。",
       "MA5 8.64 元、MA20 9.27 元，短中期均線偏弱排列。",
-      "MACD -0.5399、訊號線 -0.4599，目前在訊號線下方；柱狀值 -0.0800。",
-      "RSI14 32.7，目前未到常見偏熱或偏弱區。"
+      "MACD -0.5415、訊號線 -0.4602，目前在訊號線下方；柱狀值 -0.0812。",
+      "RSI14 32.6，目前未到常見偏熱或偏弱區。"
     ],
     "forecast_change_pct": 0.44540947857392155
   },
@@ -1801,27 +1801,27 @@
       {
         "time": "12:16",
         "predicted": null,
-        "actual": 8.36
+        "actual": 7.94
       },
       {
         "time": "12:17",
         "predicted": null,
-        "actual": 8.37
+        "actual": 7.93
       },
       {
         "time": "12:18",
         "predicted": null,
-        "actual": 8.37
+        "actual": 7.93
       },
       {
         "time": "12:19",
         "predicted": null,
-        "actual": 8.36
+        "actual": 7.92
       },
       {
         "time": "12:20",
         "predicted": 8.340474009028473,
-        "actual": 7.96
+        "actual": 7.94
       },
       {
         "time": "12:21",
@@ -1846,7 +1846,7 @@
       {
         "time": "12:25",
         "predicted": 8.348634569740552,
-        "actual": 8.4
+        "actual": 7.94
       },
       {
         "time": "12:26",
@@ -2818,32 +2818,32 @@
     },
     {
       "time": "12:20",
-      "actual": 7.96,
+      "actual": 7.94,
       "date": "2026-11-17"
     },
     {
       "time": "12:16",
-      "actual": 8.36,
+      "actual": 7.94,
       "date": "2026-11-17"
     },
     {
       "time": "12:17",
-      "actual": 8.37,
+      "actual": 7.93,
       "date": "2026-11-17"
     },
     {
       "time": "12:18",
-      "actual": 8.37,
+      "actual": 7.93,
       "date": "2026-11-17"
     },
     {
       "time": "12:19",
-      "actual": 8.36,
+      "actual": 7.92,
       "date": "2026-11-17"
     },
     {
       "time": "12:25",
-      "actual": 8.4,
+      "actual": 7.94,
       "date": "2026-11-17"
     },
     {
@@ -3508,14 +3508,14 @@
     "data_date": "2026-11-17",
     "is_intraday": true,
     "session_count": 70,
-    "latest_bar_count": 40,
+    "latest_bar_count": 41,
     "sufficient_for_macd": true,
-    "ma5": 8.644,
-    "ma20": 9.271,
-    "macd": -0.5398701603403477,
-    "macd_signal": -0.459896708912832,
-    "macd_histogram": -0.07997345142751572,
-    "rsi14": 32.71522134990791,
+    "ma5": 8.64,
+    "ma20": 9.27,
+    "macd": -0.5414656019357906,
+    "macd_signal": -0.46021579723192063,
+    "macd_histogram": -0.08124980470387,
+    "rsi14": 32.56789367837618,
     "candles": [
       {
         "date": "2026-08-19",
@@ -4407,15 +4407,15 @@
         "open": 8.05,
         "high": 8.3,
         "low": 7.93,
-        "close": 7.96,
-        "volume": 228061.0,
-        "ma5": 8.644,
-        "ma20": 9.271,
-        "macd": -0.5398701603403477,
-        "macd_signal": -0.459896708912832,
-        "macd_histogram": -0.07997345142751572,
-        "rsi14": 32.71522134990791,
-        "bars": 40
+        "close": 7.94,
+        "volume": 228081.0,
+        "ma5": 8.64,
+        "ma20": 9.27,
+        "macd": -0.5414656019357906,
+        "macd_signal": -0.46021579723192063,
+        "macd_histogram": -0.08124980470387,
+        "rsi14": 32.56789367837618,
+        "bars": 41
       }
     ]
   }
