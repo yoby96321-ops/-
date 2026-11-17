@@ -1,16 +1,16 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-17 12:25:06 CST",
-  "updated_at_epoch": 1794889506,
+  "updated_at": "2026-11-17 12:30:09 CST",
+  "updated_at_epoch": 1794889809,
   "latest_quote": {
     "price": 7.94,
-    "time": "2026-11-17 12:25:06",
+    "time": "2026-11-17 12:30:09",
     "source": "元大 SPARK 即時行情",
-    "bid": 7.94,
-    "ask": 7.95
+    "bid": 7.93,
+    "ask": 7.94
   },
   "today_change_pct": -4.337351595927963,
-  "today_estimated_volume": 252145,
+  "today_estimated_volume": 255127,
   "direction_text": "短線偏弱，留意風險；依自己的計畫決定是否減碼。",
   "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 1 個完整交易日，目前修正 +0.000 元（至少 3 天後開始調整）。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
@@ -1851,22 +1851,22 @@
       {
         "time": "12:26",
         "predicted": null,
-        "actual": 8.39
+        "actual": 7.95
       },
       {
         "time": "12:27",
         "predicted": null,
-        "actual": 8.4
+        "actual": 7.95
       },
       {
         "time": "12:28",
         "predicted": null,
-        "actual": 8.4
+        "actual": 7.95
       },
       {
         "time": "12:29",
         "predicted": null,
-        "actual": 8.4
+        "actual": 7.94
       },
       {
         "time": "12:30",
@@ -1896,7 +1896,7 @@
       {
         "time": "12:35",
         "predicted": 8.340874922649496,
-        "actual": 8.37
+        "actual": 7.94
       },
       {
         "time": "12:36",
@@ -2873,27 +2873,27 @@
     },
     {
       "time": "12:26",
-      "actual": 8.39,
+      "actual": 7.95,
       "date": "2026-11-17"
     },
     {
       "time": "12:27",
-      "actual": 8.4,
+      "actual": 7.95,
       "date": "2026-11-17"
     },
     {
       "time": "12:28",
-      "actual": 8.4,
+      "actual": 7.95,
       "date": "2026-11-17"
     },
     {
       "time": "12:29",
-      "actual": 8.4,
+      "actual": 7.94,
       "date": "2026-11-17"
     },
     {
       "time": "12:35",
-      "actual": 8.37,
+      "actual": 7.94,
       "date": "2026-11-17"
     },
     {
@@ -3508,7 +3508,7 @@
     "data_date": "2026-11-17",
     "is_intraday": true,
     "session_count": 70,
-    "latest_bar_count": 42,
+    "latest_bar_count": 43,
     "sufficient_for_macd": true,
     "ma5": 8.64,
     "ma20": 9.27,
@@ -4406,16 +4406,16 @@
         "date": "2026-11-17",
         "open": 8.05,
         "high": 8.3,
-        "low": 7.93,
+        "low": 7.92,
         "close": 7.94,
-        "volume": 232931.0,
+        "volume": 245593.0,
         "ma5": 8.64,
         "ma20": 9.27,
         "macd": -0.5414656019357906,
         "macd_signal": -0.46021579723192063,
         "macd_histogram": -0.08124980470387,
         "rsi14": 32.56789367837618,
-        "bars": 42
+        "bars": 43
       }
     ]
   }
