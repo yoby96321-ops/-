@@ -1,7 +1,7 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-20 23:15:04 CST",
-  "updated_at_epoch": 1795187704,
+  "updated_at": "2026-11-20 23:38:47 CST",
+  "updated_at_epoch": 1795189127,
   "latest_quote": {
     "price": 7.019999980926514,
     "time": "2026-11-20 收盤",
@@ -457,6 +457,16 @@
       "RSI14 27.1，處於偏弱區；低檔不代表一定會反彈。"
     ],
     "forecast_change_pct": -0.9590550625921956
+  },
+  "intraday_signals": {
+    "status": "非盤中或即時報價過舊",
+    "summary": "收盤後或沒有新鮮報價；盤中異常訊號暫停更新。",
+    "as_of": null,
+    "signals": [],
+    "momentum_15m_pct": null,
+    "volume_ratio": null,
+    "gap_pct": null,
+    "momentum_threshold_pct": null
   },
   "comparison_forecast": {
     "target_date": "2026-11-20",
@@ -1998,7 +2008,7 @@
         "high": 10.54,
         "low": 10.24,
         "close": 10.32,
-        "volume": 96073.0,
+        "volume": 95656.0,
         "ma5": 10.326,
         "ma20": 10.8355,
         "macd": -0.003122792336514024,
