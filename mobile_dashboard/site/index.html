@@ -25,6 +25,7 @@
     <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
   </section>
   <section class="card callout"><div class="muted">目前採用的模型</div><strong>歷史相似交易日</strong><div class="note" id="model-note"></div></section>
+  <section class="card"><h2>盤中波動訊號</h2><div class="decision" id="intraday-summary">等待元大盤中報價</div><div class="muted" id="intraday-status">訊號只作風險提醒，不是買賣指令。</div><ul class="reasons" id="intraday-items"></ul><div class="note">監測開盤跳空、近 15 分鐘急漲急跌、同時段成交量異常及短線區間突破。沒有觸發門檻不代表沒有風險；這些即時線索目前不會改寫預測價格曲線。</div></section>
   <section class="card"><h2>模型最近回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">回測只用預測日前的資料，並和「價格維持前一收盤價」比較。誤差越小越好。</div></section>
   <section class="card"><h2>預測信心與操作理由</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">信心會依歷史預測誤差和樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">這是依模型、均線、MACD 的條件式觀察，不含你的資金需求、交易成本、ETF 折溢價或持倉狀況；請勿單靠此訊號下單。</div></section>
   <section class="card"><h2>股價走勢與預測</h2><div class="muted" id="compare-caption">實際價格、前一交易日預測與下一交易日預測會依日期疊在同一張圖</div><div id="compare-chart" class="chart"></div></section>
@@ -68,6 +69,11 @@ async function refresh(){try{
   const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
   document.getElementById('forecast-band').textContent=f.close_low!=null?`估計區間 ${fmt(f.close_low)}～${fmt(f.close_high)} 元`:'模型資料累積中';
   document.getElementById('model-note').textContent=d.model_note||'';
+  const intraday=d.intraday_signals||{};
+  document.getElementById('intraday-summary').textContent=intraday.summary||'尚未收到盤中訊號資料。';
+  document.getElementById('intraday-status').textContent=intraday.as_of?`${intraday.status||'盤中監測'}；計算時間 ${intraday.as_of}`:(intraday.status||'等待發布器資料');
+  const intradayList=document.getElementById('intraday-items');intradayList.replaceChildren();
+  (intraday.signals||[]).forEach(signal=>{const item=document.createElement('li');item.textContent=signal.message;intradayList.appendChild(item);});
   const v=d.model_validation||{},vSummary=document.getElementById('validation-summary'),vDetail=document.getElementById('validation-detail');
   if(Number(v.sessions)>0&&Number.isFinite(Number(v.mae))&&Number.isFinite(Number(v.baseline_mae))){
     const better=Number(v.mae_improvement_pct)>0;
