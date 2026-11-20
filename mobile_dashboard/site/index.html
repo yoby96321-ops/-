@@ -25,6 +25,7 @@
     <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
   </section>
   <section class="card callout"><div class="muted">目前採用的模型</div><strong>歷史相似交易日</strong><div class="note" id="model-note"></div></section>
+  <section class="card"><h2>模型最近回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">回測只用預測日前的資料，並和「價格維持前一收盤價」比較。誤差越小越好。</div></section>
   <section class="card"><h2>預測信心與操作理由</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">信心會依歷史預測誤差和樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">這是依模型、均線、MACD 的條件式觀察，不含你的資金需求、交易成本、ETF 折溢價或持倉狀況；請勿單靠此訊號下單。</div></section>
   <section class="card"><h2>股價走勢與預測</h2><div class="muted" id="compare-caption">實際價格、前一交易日預測與下一交易日預測會依日期疊在同一張圖</div><div id="compare-chart" class="chart"></div></section>
   <section class="card"><h2>K 線、成交量與 MACD</h2><div class="muted" id="technical-caption">使用元大歷史 5 分 K 合併日 K；含 MA5/MA20、MACD(12,26,9)、RSI14。ETF 淨值、折溢價與持倉目前未接入。</div><div id="kline-chart" class="chart"></div><div id="macd-chart" class="chart-small"></div><div class="note" id="technical-summary">等待技術分析資料</div></section>
@@ -67,6 +68,14 @@ async function refresh(){try{
   const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
   document.getElementById('forecast-band').textContent=f.close_low!=null?`估計區間 ${fmt(f.close_low)}～${fmt(f.close_high)} 元`:'模型資料累積中';
   document.getElementById('model-note').textContent=d.model_note||'';
+  const v=d.model_validation||{},vSummary=document.getElementById('validation-summary'),vDetail=document.getElementById('validation-detail');
+  if(Number(v.sessions)>0&&Number.isFinite(Number(v.mae))&&Number.isFinite(Number(v.baseline_mae))){
+    const better=Number(v.mae_improvement_pct)>0;
+    vSummary.textContent=`最近 ${v.sessions} 個完整交易日：模型 ${Number(v.mae).toFixed(3)} 元，前收不變基準 ${Number(v.baseline_mae).toFixed(3)} 元；${better?'模型誤差較小':'模型目前沒有勝過簡單基準'}`;
+    const coverage=Number.isFinite(Number(v.coverage_iqr_pct))?`${Number(v.coverage_iqr_pct).toFixed(1)}%`:'資料不足';
+    const closeError=Number.isFinite(Number(v.median_close_error))?`${Number(v.median_close_error)>=0?'+':''}${Number(v.median_close_error).toFixed(3)} 元`:'資料不足';
+    vDetail.textContent=`逐時價格平均誤差；模型${better?'改善':'增加'} ${Math.abs(Number(v.mae_improvement_pct)||0).toFixed(1)}%，收盤方向命中 ${Number(v.direction_accuracy_pct).toFixed(0)}%，盤中落在預測區間 ${coverage}，收盤中位誤差 ${closeError}。測試期間 ${v.from_date} 至 ${v.to_date}；這不是未來準確率。`;
+  }else{vSummary.textContent='完整歷史資料還不夠，暫時無法驗證模型表現。';}
   const a=d.analysis||{};
   document.getElementById('confidence-level').textContent=`信心參考：${a.confidence_level||'尚無資料'}`;
   document.getElementById('confidence-note').textContent=a.confidence_note||'等發布器更新預測與回測資料後顯示。';
