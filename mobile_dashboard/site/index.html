@@ -24,10 +24,11 @@
     <div class="card metric"><div class="label">今日估計成交量</div><div class="value" id="volume">—</div><div class="sub">元大 API 回傳單位</div></div>
     <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
   </section>
-  <section class="card callout"><div class="muted">目前採用的模型</div><strong>歷史相似交易日</strong><div class="note" id="model-note"></div></section>
+  <section class="card callout"><div class="muted">路徑圖參考方法</div><strong>歷史相似交易日（輔助參考）</strong><div class="note" id="model-note"></div></section>
+  <section class="card"><h2>機器學習預測｜Ridge 回歸</h2><div class="grid"><div class="metric"><div class="label">下一交易日預測報酬</div><div class="value" id="ml-return">—</div></div><div class="metric"><div class="label">預測收盤估值</div><div class="value" id="ml-close">—</div></div><div class="metric"><div class="label">逐日回測 MAE</div><div class="value" id="ml-mae">—</div></div><div class="metric"><div class="label">簡單基準 MAE</div><div class="value" id="ml-base">—</div></div></div><div class="decision" id="ml-verdict">等待模型資料</div><div class="note" id="ml-details">以過去可得特徵逐日訓練與測試；資料不足或誤差未勝過基準時，不提供方向判斷。</div><div id="ml-chart" class="chart-small"></div></section>
   <section class="card"><h2>盤中波動訊號</h2><div class="decision" id="intraday-summary">等待元大盤中報價</div><div class="muted" id="intraday-status">訊號只作風險提醒，不是買賣指令。</div><ul class="reasons" id="intraday-items"></ul><div class="note">監測開盤跳空、近 15 分鐘急漲急跌、同時段成交量異常及短線區間突破。沒有觸發門檻不代表沒有風險；這些即時線索目前不會改寫預測價格曲線。</div></section>
   <section class="card"><h2>模型最近回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">回測只用預測日前的資料，並和「價格維持前一收盤價」比較。誤差越小越好。</div></section>
-  <section class="card"><h2>預測信心與操作理由</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">信心會依歷史預測誤差和樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">這是依模型、均線、MACD 的條件式觀察，不含你的資金需求、交易成本、ETF 折溢價或持倉狀況；請勿單靠此訊號下單。</div></section>
+  <section class="card"><h2>訊號與風險說明</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">依歷史誤差與樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">若模型未在歷史回測中勝過簡單基準，網站會標示不提供買進或賣出方向。資料不含新聞、ETF 折溢價、成分股資金流及個人持倉。</div></section>
   <section class="card"><h2>股價走勢與預測</h2><div class="muted" id="compare-caption">實際價格、前一交易日預測與下一交易日預測會依日期疊在同一張圖</div><div id="compare-chart" class="chart"></div></section>
   <section class="card"><h2>K 線、成交量與 MACD</h2><div class="muted" id="technical-caption">使用元大歷史 5 分 K 合併日 K；含 MA5/MA20、MACD(12,26,9)、RSI14。ETF 淨值、折溢價與持倉目前未接入。</div><div id="kline-chart" class="chart"></div><div id="macd-chart" class="chart-small"></div><div class="note" id="technical-summary">等待技術分析資料</div></section>
   <p class="note warn">這是歷史資料模型的估算與行情展示，不是獲利保證或個人化投資建議。</p>
@@ -69,6 +70,19 @@ async function refresh(){try{
   const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
   document.getElementById('forecast-band').textContent=f.close_low!=null?`估計區間 ${fmt(f.close_low)}～${fmt(f.close_high)} 元`:'模型資料累積中';
   document.getElementById('model-note').textContent=d.model_note||'';
+  const ml=d.ml_model||{},mb=ml.backtest||{};
+  document.getElementById('ml-return').textContent=Number.isFinite(Number(ml.forecast_return_pct))?(Number(ml.forecast_return_pct)>=0?'+':'')+fmt(ml.forecast_return_pct,2)+'%':'資料不足';
+  document.getElementById('ml-close').textContent=ml.forecast_close==null?'—':fmt(ml.forecast_close)+' 元';
+  document.getElementById('ml-mae').textContent=mb.mae==null?'資料不足':fmt(mb.mae*100,3)+'%';
+  document.getElementById('ml-base').textContent=mb.baseline_mae==null?'—':fmt(mb.baseline_mae*100,3)+'%';
+  const mlBetter=Number(mb.mae)<Number(mb.baseline_mae)&&Number(mb.n)>=10;
+  document.getElementById('ml-verdict').textContent=ml.forecast_return_pct==null||!Number.isFinite(Number(ml.forecast_return_pct))?'樣本不足，暫不提供方向':mlBetter?'近期逐日回測優於簡單基準；預測仍有不確定性':'回測尚未證明模型優於基準，先不採用方向訊號';
+  document.getElementById('ml-details').textContent=`${ml.name||'Ridge 回歸'}；目標：${ml.target||'下一交易日收盤報酬率'}；回測 ${mb.n||0} 日。${ml.scaling||''}`;
+  const mp=ml.backtest_points||[];
+  draw('ml-chart',[
+    {x:mp.map(x=>x.date),y:mp.map(x=>x.actual),name:'實際報酬率',mode:'lines+markers',line:{color:'#ff9d4d'}},
+    {x:mp.map(x=>x.date),y:mp.map(x=>x.prediction),name:'Ridge 預測',mode:'lines+markers',line:{color:'#58a6ff'}}
+  ],{xaxis:{gridcolor:'#24344e',title:'測試日期'},yaxis:{gridcolor:'#24344e',title:'次日報酬率（%）'}});
   const intraday=d.intraday_signals||{};
   document.getElementById('intraday-summary').textContent=intraday.summary||'尚未收到盤中訊號資料。';
   document.getElementById('intraday-status').textContent=intraday.as_of?`${intraday.status||'盤中監測'}；計算時間 ${intraday.as_of}`:(intraday.status||'等待發布器資料');
