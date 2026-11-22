@@ -5,9 +5,17 @@ on:
     - cron: '20 6 * * 1-5'
 permissions:
   contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
 jobs:
   update:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -18,3 +26,16 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Update 00403A v2 daily model data'
+      - uses: actions/configure-pages@v5
+      - name: Assemble sites with refreshed data
+        run: |
+          mkdir -p _site/v2 _site/data
+          cp -R mobile_dashboard/site/. _site/
+          cp -R mobile_dashboard_v2/site/. _site/v2/
+          cp mobile_dashboard_v2/data/data.json _site/data/data.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy pages
+        id: deployment
+        uses: actions/deploy-pages@v4
