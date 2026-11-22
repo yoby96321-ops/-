@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "mobile_dashboard/site/index.html"
+      - "mobile_dashboard/site/index.html"\n      - "mobile_dashboard_v2/**"\n      - ".github/workflows/update_00403a_v2.yml"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
