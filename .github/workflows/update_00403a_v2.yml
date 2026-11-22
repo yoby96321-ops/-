@@ -1,0 +1,20 @@
+name: Update 00403A v2 data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 6 * * 1-5'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python mobile_dashboard_v2/update_model.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Update 00403A v2 daily model data'
