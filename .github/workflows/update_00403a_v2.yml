@@ -1,6 +1,10 @@
 name: Update 00403A v2 data
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "mobile_dashboard_v2/update_model.py"
   schedule:
     - cron: '20 6 * * 1-5'
 permissions:
@@ -36,6 +40,8 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      - name: Allow Pages artifact registration to finish
+        run: sleep 10
       - name: Deploy pages
         id: deployment
         uses: actions/deploy-pages@v4
