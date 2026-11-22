@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "mobile_dashboard_v2/update_model.py"
+      - ".github/workflows/update_00403a_v2.yml"
   schedule:
     - cron: '20 6 * * 1-5'
 permissions:
