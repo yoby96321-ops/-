@@ -18,6 +18,14 @@ SYMBOL = "00403A"
 START_YEAR, START_MONTH = 2026, 5
 
 
+def to_number(value):
+    """Parse TWSE numeric cells; '-' and empty cells are treated as unavailable."""
+    text = str(value).replace(",", "").strip()
+    if text in {"", "-", "--"}:
+        return None
+    return float(text)
+
+
 def fetch_month(year, month):
     url = ("https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY?"
            f"date={year}{month:02d}01&stockNo={SYMBOL}&response=json")
@@ -30,13 +38,19 @@ def fetch_month(year, month):
     for row in payload.get("data", []):
         try:
             y, m, d = map(int, row[0].split("/"))
-            # TWSE date fields use ROC year.
+            # TWSE STOCK_DAY fields: date, volume, turnover, open, high, low,
+            # close, change, transactions, note. Negative change is valid data.
             day = date(y + 1911, m, d).isoformat()
-            vals = [float(str(v).replace(",", "")) for v in row[3:8]]
-            open_, high, low, close, volume = vals
-            if min(open_, high, low, close) <= 0 or volume < 0 or high < max(open_, low, close) or low > min(open_, high, close):
+            open_, high, low, close = [to_number(v) for v in row[3:7]]
+            volume = to_number(row[1])
+            if None in (open_, high, low, close, volume):
                 continue
-            rows.append({"date": day, "open": open_, "high": high, "low": low, "close": close, "volume": volume})
+            if min(open_, high, low, close) <= 0 or volume < 0:
+                continue
+            if high < max(open_, low, close) or low > min(open_, high, close):
+                continue
+            rows.append({"date": day, "open": open_, "high": high, "low": low,
+                         "close": close, "volume": volume})
         except (ValueError, IndexError):
             continue
     return rows
@@ -109,7 +123,6 @@ def run():
     latest=rows[-1] if rows else None
     result={"schema_version":1,"symbol":SYMBOL,"updated_at":date.today().isoformat(),"data_status":"loaded" if rows else "no_data","latest_price":latest["close"] if latest else None,"forecast":{"return_pct":forecast*100,"close":latest["close"]*(1+forecast)} if latest and forecast is not None else None,"walk_forward_metrics":metrics,"prediction_log":tail,"daily_bars":rows}
     PUBLIC.write_text(json.dumps(result,ensure_ascii=False),encoding="utf-8")
-    print(f"rows={len(rows)} forecast={forecast} metrics={metrics}")
+    print(f"rows={len(rows)} latest_date={latest['date'] if latest else None} latest_close={latest['close'] if latest else None} forecast={forecast} metrics={metrics}")
 
 if __name__=="__main__": run()
-
