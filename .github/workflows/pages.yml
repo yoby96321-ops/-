@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - "mobile_dashboard/site/index.html"\n      - "mobile_dashboard_v2/**"\n      - ".github/workflows/update_00403a_v2.yml"
+      - "mobile_dashboard/site/index.html"
+      - "mobile_dashboard_v2/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -26,10 +27,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Assemble v1 and isolated v2 sites
+        run: |
+          mkdir -p _site/v2 _site/data
+          cp -R mobile_dashboard/site/. _site/
+          cp -R mobile_dashboard_v2/site/. _site/v2/
+          cp mobile_dashboard_v2/data/data.json _site/data/data.json
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: mobile_dashboard/site
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
