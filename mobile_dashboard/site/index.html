@@ -77,7 +77,7 @@ async function refresh(){try{
   document.getElementById('ml-base').textContent=mb.baseline_mae==null?'—':fmt(mb.baseline_mae*100,3)+'%';
   const mlBetter=Number(mb.mae)<Number(mb.baseline_mae)&&Number(mb.n)>=10;
   document.getElementById('ml-verdict').textContent=ml.forecast_return_pct==null||!Number.isFinite(Number(ml.forecast_return_pct))?'樣本不足，暫不提供方向':mlBetter?'近期逐日回測優於簡單基準；預測仍有不確定性':'回測尚未證明模型優於基準，先不採用方向訊號';
-  document.getElementById('ml-details').textContent=`${ml.name||'Ridge 回歸'}；目標：${ml.target||'下一交易日收盤報酬率'}；回測 ${mb.n||0} 日。${ml.scaling||''}`;
+  document.getElementById('ml-details').textContent=`${ml.name||'Ridge 回歸'}；目標：${ml.target||'下一交易日收盤報酬率'}；可用訓練樣本 ${ml.training_sessions||0} 日，逐日回測 ${mb.n||0} 日。早期樣本少時仍納入，但預測不穩定。${ml.scaling||''}`;
   const mp=ml.backtest_points||[];
   draw('ml-chart',[
     {x:mp.map(x=>x.date),y:mp.map(x=>x.actual),name:'實際報酬率',mode:'lines+markers',line:{color:'#ff9d4d'}},
