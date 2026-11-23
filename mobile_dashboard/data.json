@@ -1,17 +1,17 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-23 13:00:01 CST",
-  "updated_at_epoch": 1795410001,
+  "updated_at": "2026-11-23 13:05:07 CST",
+  "updated_at_epoch": 1795410307,
   "latest_quote": {
     "price": 7.32,
-    "time": "2026-11-23 13:00:00",
+    "time": "2026-11-23 13:05:07",
     "source": "元大 SPARK 即時行情",
     "bid": 7.31,
     "ask": 7.32
   },
   "today_change_pct": 4.2735045568175645,
-  "today_estimated_volume": 186652,
-  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.035 元（至少 3 天後開始調整）。資料庫目前保存日線 142 筆、5 分 K 3991 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "today_estimated_volume": 188260,
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.035 元（至少 3 天後開始調整）。資料庫目前保存日線 142 筆、5 分 K 3992 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
     "validated_days": 5,
     "required_days": 3,
@@ -800,7 +800,7 @@
   "intraday_signals": {
     "status": "元大即時成交監測中",
     "summary": "出現偏弱波動警示，留意風險；這不是賣出指令。",
-    "as_of": "2026-11-23 13:00:00",
+    "as_of": "2026-11-23 13:05:07",
     "signals": [
       {
         "code": "opening_gap",
@@ -808,8 +808,8 @@
         "message": "開盤跳空 -2.14%"
       }
     ],
-    "momentum_15m_pct": 0.273972602739736,
-    "volume_ratio": 0.8856517881291192,
+    "momentum_15m_pct": 0.1367989056087593,
+    "volume_ratio": 0.8725920981886275,
     "gap_pct": -2.1367518708556466,
     "momentum_threshold_pct": 1.1482854606099784
   },
@@ -2374,6 +2374,26 @@
         "actual": 7.32
       },
       {
+        "time": "13:01",
+        "predicted": null,
+        "actual": 7.33
+      },
+      {
+        "time": "13:02",
+        "predicted": null,
+        "actual": 7.32
+      },
+      {
+        "time": "13:03",
+        "predicted": null,
+        "actual": 7.31
+      },
+      {
+        "time": "13:04",
+        "predicted": null,
+        "actual": 7.32
+      },
+      {
         "time": "13:05",
         "predicted": 6.9634797029706395,
         "actual": 7.32
@@ -2381,7 +2401,7 @@
       {
         "time": "13:10",
         "predicted": 6.967113243390833,
-        "actual": null
+        "actual": 7.32
       },
       {
         "time": "13:15",
@@ -3580,6 +3600,31 @@
       "time": "13:05",
       "actual": 7.32,
       "date": "2026-11-23"
+    },
+    {
+      "time": "13:01",
+      "actual": 7.33,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:02",
+      "actual": 7.32,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:03",
+      "actual": 7.31,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:04",
+      "actual": 7.32,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:10",
+      "actual": 7.32,
+      "date": "2026-11-23"
     }
   ],
   "technical_analysis": {
@@ -3588,7 +3633,7 @@
     "data_date": "2026-11-23",
     "is_intraday": true,
     "session_count": 74,
-    "latest_bar_count": 49,
+    "latest_bar_count": 50,
     "sufficient_for_macd": true,
     "ma5": 7.582000000000001,
     "ma20": 8.724499999999999,
@@ -4488,14 +4533,14 @@
         "high": 7.36,
         "low": 6.81,
         "close": 7.32,
-        "volume": 186652.0,
+        "volume": 188260.0,
         "ma5": 7.582000000000001,
         "ma20": 8.724499999999999,
         "macd": -0.7128926230243824,
         "macd_signal": -0.576294835035554,
         "macd_histogram": -0.13659778798882838,
         "rsi14": 31.836406168280732,
-        "bars": 49
+        "bars": 50
       }
     ]
   }
