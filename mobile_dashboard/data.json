@@ -1,17 +1,17 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-23 02:59:30 CST",
-  "updated_at_epoch": 1795373970,
+  "updated_at": "2026-11-23 09:09:02 CST",
+  "updated_at_epoch": 1795396142,
   "latest_quote": {
-    "price": 7.019999980926514,
-    "time": "2026-11-20 收盤",
-    "source": "最近收盤價（Yahoo Finance）",
-    "bid": null,
-    "ask": null
+    "price": 6.97,
+    "time": "2026-11-23 09:08:58",
+    "source": "元大 SPARK 即時行情",
+    "bid": 6.96,
+    "ask": 6.98
   },
-  "today_change_pct": 0.0,
-  "today_estimated_volume": null,
-  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.035 元（至少 3 天後開始調整）。資料庫目前保存日線 142 筆、5 分 K 3942 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "today_change_pct": -0.7122504424838305,
+  "today_estimated_volume": 44648,
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.035 元（至少 3 天後開始調整）。資料庫目前保存日線 142 筆、5 分 K 3944 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
     "validated_days": 5,
     "required_days": 3,
@@ -785,26 +785,38 @@
   },
   "forecast_reference_price": 7.019999980926514,
   "analysis": {
-    "stance": "模型回測尚未勝過前收不變基準｜先把預測當觀察圖，不提供買賣方向。",
+    "stance": "盤中觸發波動提醒｜目前模型曲線未納入這些即時線索，先觀察走勢確認，不提供買賣方向。",
     "confidence_level": "偏低",
     "confidence_note": "目前以 5 個完整交易日初步比較，逐時平均絕對誤差約 0.379 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.309 元，前收不變基準 0.300 元，模型誤差改善 -3.1%。因此目前不把預測當成可用的買賣訊號。",
     "reasons": [
       "模型估計收盤中位數 6.95 元，相對參考收盤 7.02 元約 -0.96%；估計區間 6.67～7.05 元。",
-      "MA5 7.78 元、MA20 8.86 元，短中期均線偏弱排列。",
-      "MACD -0.6860、訊號線 -0.5421，目前在訊號線下方；柱狀值 -0.1438。",
-      "RSI14 27.1，處於偏弱區；低檔不代表一定會反彈。"
+      "MA5 7.51 元、MA20 8.71 元，短中期均線偏弱排列。",
+      "MACD -0.7400、訊號線 -0.5817，目前在訊號線下方；柱狀值 -0.1583。",
+      "RSI14 26.9，處於偏弱區；低檔不代表一定會反彈。",
+      "盤中監測：開盤跳空 -2.14%；截至目前成交量約為過去同時段中位數的 2.5 倍。這些是即時風險線索，尚未用來改寫模型價格曲線。"
     ],
     "forecast_change_pct": -0.9590550625921956
   },
   "intraday_signals": {
-    "status": "非盤中或即時報價過舊",
-    "summary": "收盤後或沒有新鮮報價；盤中異常訊號暫停更新。",
-    "as_of": null,
-    "signals": [],
+    "status": "元大即時成交監測中",
+    "summary": "出現偏弱波動警示，留意風險；這不是賣出指令。",
+    "as_of": "2026-11-23 09:08:58",
+    "signals": [
+      {
+        "code": "opening_gap",
+        "direction": "down",
+        "message": "開盤跳空 -2.14%"
+      },
+      {
+        "code": "volume_surge",
+        "direction": "neutral",
+        "message": "截至目前成交量約為過去同時段中位數的 2.5 倍"
+      }
+    ],
     "momentum_15m_pct": null,
-    "volume_ratio": null,
-    "gap_pct": null,
-    "momentum_threshold_pct": null
+    "volume_ratio": 2.513680891791465,
+    "gap_pct": -2.1367518708556466,
+    "momentum_threshold_pct": 1.1482854606099784
   },
   "comparison_forecast": {
     "target_date": "2026-11-23",
@@ -1199,12 +1211,17 @@
       {
         "time": "09:05",
         "predicted": 6.9810497491003884,
-        "actual": null
+        "actual": 7.03
+      },
+      {
+        "time": "09:08",
+        "predicted": null,
+        "actual": 6.97
       },
       {
         "time": "09:10",
         "predicted": 6.951859142157446,
-        "actual": null
+        "actual": 6.98
       },
       {
         "time": "09:15",
@@ -1468,37 +1485,38 @@
       }
     ]
   },
-  "today_actual_points": [],
+  "today_actual_points": [
+    {
+      "time": "09:05",
+      "actual": 7.03,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "09:10",
+      "actual": 6.98,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "09:08",
+      "actual": 6.97,
+      "date": "2026-11-23"
+    }
+  ],
   "technical_analysis": {
     "source": "元大 SPARK 歷史 5 分 K（日 K 由 5 分 K 合併）",
     "timeframe": "日 K",
-    "data_date": "2026-11-20",
-    "is_intraday": false,
-    "session_count": 73,
-    "latest_bar_count": 54,
+    "data_date": "2026-11-23",
+    "is_intraday": true,
+    "session_count": 74,
+    "latest_bar_count": 2,
     "sufficient_for_macd": true,
-    "ma5": 7.7780000000000005,
-    "ma20": 8.8605,
-    "macd": -0.6859753974248761,
-    "macd_signal": -0.5421453880383469,
-    "macd_histogram": -0.14383000938652923,
-    "rsi14": 27.132187497152216,
+    "ma5": 7.514,
+    "ma20": 8.7075,
+    "macd": -0.7400151301468902,
+    "macd_signal": -0.5817193364600556,
+    "macd_histogram": -0.15829579368683466,
+    "rsi14": 26.88479840760236,
     "candles": [
-      {
-        "date": "2026-08-24",
-        "open": 9.92,
-        "high": 10.03,
-        "low": 9.87,
-        "close": 9.87,
-        "volume": 104825.0,
-        "ma5": 9.989999999999998,
-        "ma20": null,
-        "macd": null,
-        "macd_signal": null,
-        "macd_histogram": null,
-        "rsi14": null,
-        "bars": 54
-      },
       {
         "date": "2026-08-25",
         "open": 9.77,
@@ -2383,6 +2401,21 @@
         "macd_histogram": -0.14383000938652923,
         "rsi14": 27.132187497152216,
         "bars": 54
+      },
+      {
+        "date": "2026-11-23",
+        "open": 6.87,
+        "high": 7.11,
+        "low": 6.86,
+        "close": 6.98,
+        "volume": 44661.0,
+        "ma5": 7.514,
+        "ma20": 8.7075,
+        "macd": -0.7400151301468902,
+        "macd_signal": -0.5817193364600556,
+        "macd_histogram": -0.15829579368683466,
+        "rsi14": 26.88479840760236,
+        "bars": 2
       }
     ]
   }
