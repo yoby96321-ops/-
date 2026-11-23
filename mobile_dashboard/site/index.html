@@ -14,6 +14,19 @@
     .age{display:block;color:var(--muted);font-size:12px;margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .callout{border-left:4px solid var(--blue)}.callout strong{font-size:17px}.chart{width:100%;height:340px}.chart-small{width:100%;height:210px}.note{font-size:12px;color:var(--muted);margin:4px 2px 0}.warn{color:#ffd27b}.confidence{display:inline-block;border:1px solid #49617f;border-radius:999px;padding:3px 10px;color:#d9e8ff;font-size:13px;margin:0 0 8px}.reasons{padding-left:20px;margin:8px 0;color:#d6e2f2;font-size:14px}.reasons li{margin:5px 0}.decision{font-weight:700;font-size:16px;margin:4px 0}
     @media(min-width:700px){main{padding-top:30px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.chart{height:420px}}
+    .session-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 12px}
+    .session-controls button{min-height:44px;padding:8px;border:1px solid #3a506d;border-radius:8px;background:#15243a;color:#cbd8ea;font:inherit;font-size:14px;cursor:pointer}
+    .session-controls button[aria-pressed="true"]{background:#203e65;border-color:var(--blue);color:#fff;font-weight:700}
+    .session-controls button:disabled{opacity:.45;cursor:default}
+    .session-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 0;color:#d6e2f2;font-size:12px}
+    .session-legend span{display:inline-flex;align-items:center;gap:5px}
+    .session-legend i{width:16px;height:3px;border-radius:2px;background:var(--swatch)}
+    .session-legend .band{height:9px;background:#58a6ff40;border:1px solid #58a6ff70}
+    .chart,.chart-small{touch-action:pan-y}
+    @media(max-width:699px){
+      main{padding-inline:10px}.card{padding:12px}.chart{height:300px}
+      #compare-chart{height:270px}.chart-small{height:240px}
+    }
   </style>
 </head>
 <body><main>
@@ -29,7 +42,16 @@
   <section class="card"><h2>盤中波動訊號</h2><div class="decision" id="intraday-summary">等待元大盤中報價</div><div class="muted" id="intraday-status">訊號只作風險提醒，不是買賣指令。</div><ul class="reasons" id="intraday-items"></ul><div class="note">監測開盤跳空、近 15 分鐘急漲急跌、同時段成交量異常及短線區間突破。沒有觸發門檻不代表沒有風險；這些即時線索目前不會改寫預測價格曲線。</div></section>
   <section class="card"><h2>模型最近回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">回測只用預測日前的資料，並和「價格維持前一收盤價」比較。誤差越小越好。</div></section>
   <section class="card"><h2>訊號與風險說明</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">依歷史誤差與樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">若模型未在歷史回測中勝過簡單基準，網站會標示不提供買進或賣出方向。資料不含新聞、ETF 折溢價、成分股資金流及個人持倉。</div></section>
-  <section class="card"><h2>股價走勢與預測</h2><div class="muted" id="compare-caption">實際價格、前一交易日預測與下一交易日預測會依日期疊在同一張圖</div><div id="compare-chart" class="chart"></div></section>
+  <section class="card">
+    <h2>股價走勢與預測</h2>
+    <div class="session-controls" role="group" aria-label="選擇交易日圖表">
+      <button type="button" id="show-comparison" aria-pressed="true" aria-controls="compare-chart">當日對照</button>
+      <button type="button" id="show-forecast" aria-pressed="false" aria-controls="compare-chart">下一交易日預測</button>
+    </div>
+    <div class="muted" id="compare-caption" aria-live="polite">等待盤中資料</div>
+    <div id="compare-legend" class="session-legend"></div>
+    <div id="compare-chart" class="chart"></div>
+  </section>
   <section class="card"><h2>K 線、成交量與 MACD</h2><div class="muted" id="technical-caption">使用元大歷史 5 分 K 合併日 K；含 MA5/MA20、MACD(12,26,9)、RSI14。ETF 淨值、折溢價與持倉目前未接入。</div><div id="kline-chart" class="chart"></div><div id="macd-chart" class="chart-small"></div><div class="note" id="technical-summary">等待技術分析資料</div></section>
   <p class="note warn">這是歷史資料模型的估算與行情展示，不是獲利保證或個人化投資建議。</p>
   <p class="note" id="updated">—</p>
@@ -59,7 +81,112 @@ function renderUpdateAge(){
   el.textContent=hours?`距資料更新 ${hours}小時 ${minutes}分 ${seconds}秒`:minutes?`距資料更新 ${minutes}分 ${seconds}秒`:`距資料更新 ${seconds}秒`;
 }
 const chartLayout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'#cbd8ea',size:12},margin:{l:48,r:14,t:15,b:40},xaxis:{gridcolor:'#24344e',title:'時間'},yaxis:{gridcolor:'#24344e',title:'價格（元）'},legend:{orientation:'h',y:1.12},autosize:true};
-function draw(id,traces,layout){Plotly.react(id,traces,{...chartLayout,...layout},{responsive:true,displayModeBar:false});}
+const touchScreen=matchMedia('(pointer: coarse)');
+const narrowScreen=matchMedia('(max-width: 699px)');
+function draw(id,traces,layout){
+  const options={...chartLayout,...layout,dragmode:false};
+  for(const axis of ['xaxis','yaxis','yaxis2']){
+    if(options[axis])options[axis]={...options[axis],fixedrange:true};
+  }
+  if(narrowScreen.matches&&id!=='compare-chart'){
+    options.xaxis={...options.xaxis,nticks:4};
+    options.margin={...options.margin,l:42,r:id==='kline-chart'?42:14,t:53,b:40};
+    options.legend={orientation:'h',x:0,y:1.03,yanchor:'bottom',font:{size:10},itemwidth:22};
+  }
+  Plotly.react(id,traces,options,{
+    responsive:true,displayModeBar:false,scrollZoom:false,doubleClick:false,staticPlot:touchScreen.matches
+  });
+}
+
+const sessionStart=9*60,sessionEnd=13*60+30;
+const timeTicks=[sessionStart,10*60+30,12*60,sessionEnd];
+const clockLabel=minute=>`${String(Math.floor(minute/60)).padStart(2,'0')}:${String(minute%60).padStart(2,'0')}`;
+let chartData=null;
+let sessionView=null;
+function sessionPoints(points){
+  return points.flatMap(point=>{
+    const clock=/^(\d{1,2}):([0-5]\d)$/.exec(point.time||'');
+    if(!clock)return [];
+    const minute=Number(clock[1])*60+Number(clock[2]);
+    return minute>=sessionStart&&minute<=sessionEnd?[{...point,minute}]:[];
+  }).sort((a,b)=>a.minute-b.minute);
+}
+const hasPrice=value=>typeof value==='number'&&Number.isFinite(value)&&value>0;
+function priceTrace(points,key,name,color,dash='solid'){
+  const usable=points.filter(p=>hasPrice(p[key]));
+  return {x:usable.map(p=>p.minute),y:usable.map(p=>p[key]),text:usable.map(p=>clockLabel(p.minute)),
+    name,mode:usable.length===1?'markers':'lines',line:{color,width:2.7,dash},marker:{color,size:6},
+    hovertemplate:'%{text}　%{y:.2f} 元<extra>%{fullData.name}</extra>'};
+}
+function renderSessionChart(){
+  if(!chartData)return;
+  const comparison=chartData.comparison||{}, forecast=chartData.next_day_forecast||{};
+  const backup=chartData.comparison_forecast||{};
+  const comparisonPoints=sessionPoints(comparison.points||[]);
+  const forecastPoints=sessionPoints(forecast.points||[]);
+  const alignedForecast=forecast.target_date===comparison.target_date?forecast:backup;
+  const savedPoints=alignedForecast.target_date===comparison.target_date?sessionPoints(alignedForecast.points||[]):[];
+  const sameDayPrediction=new Map(savedPoints.filter(p=>hasPrice(p.price)).map(p=>[p.minute,{...p,predicted:p.price}]));
+  for(const point of comparisonPoints)if(hasPrice(point.predicted))sameDayPrediction.set(point.minute,point);
+  const predicted=[...sameDayPrediction.values()].sort((a,b)=>a.minute-b.minute);
+  const actual=comparisonPoints.filter(p=>hasPrice(p.actual));
+  const hasComparison=actual.length>0||predicted.length>0;
+  const hasNext=Boolean(forecast.target_date&&forecast.target_date!==comparison.target_date&&forecastPoints.some(p=>hasPrice(p.price)));
+  if(sessionView===null||(sessionView==='forecast'&&!hasNext)){
+    sessionView=!hasComparison&&hasNext?'forecast':'compare';
+  }
+  const isForecast=sessionView==='forecast';
+  document.getElementById('show-comparison').setAttribute('aria-pressed',String(!isForecast));
+  const nextButton=document.getElementById('show-forecast');
+  nextButton.setAttribute('aria-pressed',String(isForecast));
+  nextButton.disabled=!hasNext;
+
+  const traces=[],labels=[];
+  const addLine=(points,key,name,color,dash)=>{
+    const line=priceTrace(points,key,name,color,dash);
+    if(!line.x.length)return;
+    traces.push(line);
+    labels.push({name,color});
+  };
+  if(isForecast){
+    const band=forecastPoints.filter(p=>hasPrice(p.low)&&hasPrice(p.high)&&p.high>=p.low);
+    if(band.length>1){
+      const x=band.map(p=>p.minute);
+      traces.push({x,y:band.map(p=>p.low),mode:'lines',line:{width:0},hoverinfo:'skip'});
+      traces.push({x,y:band.map(p=>p.high),mode:'lines',line:{width:0},fill:'tonexty',fillcolor:'rgba(88,166,255,.20)',hoverinfo:'skip'});
+      labels.push({name:'估計區間',band:true});
+    }
+    addLine(forecastPoints,'price','預測中位數','#58a6ff');
+  }else{
+    addLine(predicted,'predicted','開盤前預測','#58a6ff','dash');
+    addLine(actual,'actual','當日實際','#ff9d4d');
+  }
+
+  const date=isForecast?forecast.target_date:comparison.target_date;
+  const caption=[date,isForecast?'下一交易日預測':'當日預測與實際','09:00–13:30 台北時間'];
+  if(!traces.length)caption.push('等待資料');
+  else if(!isForecast&&!actual.length)caption.push('尚無盤中成交');
+  else if(!isForecast&&!predicted.length)caption.push('尚無先前預測');
+  document.getElementById('compare-caption').textContent=caption.filter(Boolean).join(' · ');
+  document.getElementById('compare-legend').replaceChildren(...labels.map(({name,color,band})=>{
+    const label=document.createElement('span'), swatch=document.createElement('i');
+    swatch.setAttribute('aria-hidden','true');
+    if(band)swatch.classList.add('band');
+    else swatch.style.setProperty('--swatch',color);
+    label.append(swatch,document.createTextNode(name));
+    return label;
+  }));
+  draw('compare-chart',traces,{
+    margin:{l:43,r:15,t:14,b:35},showlegend:false,hovermode:'closest',
+    xaxis:{type:'linear',range:[sessionStart,sessionEnd],autorange:false,tickmode:'array',
+      tickvals:timeTicks,ticktext:timeTicks.map(clockLabel),tickangle:0,gridcolor:'#24344e',tickfont:{size:11}},
+    yaxis:{...chartLayout.yaxis,title:'',nticks:5,showticklabels:traces.length>0},
+    annotations:traces.length?[]:[{text:'等待盤中資料',xref:'paper',yref:'paper',x:.5,y:.5,showarrow:false,font:{color:'#9aabc3'}}]
+  });
+}
+for(const [id,view] of [['show-comparison','compare'],['show-forecast','forecast']]){
+  document.getElementById(id).addEventListener('click',()=>{sessionView=view;renderSessionChart();});
+}
 async function refresh(){try{
   const res=await fetch(dataUrl()+'?t='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('資料尚未發布'); const d=await res.json();
   publishedAtMs=parsePublishedAt(d);renderUpdateAge();
@@ -103,24 +230,8 @@ async function refresh(){try{
   const reasonList=document.getElementById('analysis-reasons');reasonList.replaceChildren();
   (a.reasons||[]).forEach(reason=>{const item=document.createElement('li');item.textContent=reason;reasonList.appendChild(item);});
   document.getElementById('target').textContent=`預測日期：${f.target_date||'資料累積中'}　｜　標的：00403A`;
-  const c=d.comparison||{},cp=c.points||[],np=f.points||[];
-  const at=(day,clock)=>day&&clock?`${day} ${clock}:00`:null;
-  const caption=[];
-  if(c.target_date)caption.push(`${c.target_date}：前一交易日預測與當日實際`);
-  if(f.target_date)caption.push(`${f.target_date}：下一交易日預測`);
-  if(f.sample_count)caption.push(`預測參考 ${f.sample_count} 個歷史相似交易日`);
-  document.getElementById('compare-caption').textContent=(caption.length?caption.join('；'):'等待足夠資料')+`；資料更新 ${d.updated_at||'—'}`;
-  const traces=[];
-  if(cp.length){
-    traces.push({x:cp.map(x=>at(c.target_date,x.time)),y:cp.map(x=>x.predicted),name:`${c.target_date||'前一交易日'}預測`,mode:'lines',line:{color:'#58a6ff',width:3}});
-    traces.push({x:cp.map(x=>at(c.target_date,x.time)),y:cp.map(x=>x.actual),name:`${c.target_date||'當日'}實際`,mode:'lines',line:{color:'#ff9d4d',width:3}});
-  }
-  if(np.length){
-    traces.push({x:np.map(x=>at(f.target_date,x.time)),y:np.map(x=>x.high),name:'下一交易日預測區間上緣',mode:'lines',connectgaps:false,line:{color:'#58a6ff',width:1,dash:'dot'}});
-    traces.push({x:np.map(x=>at(f.target_date,x.time)),y:np.map(x=>x.low),name:'下一交易日預測區間下緣',mode:'lines',connectgaps:false,line:{color:'#58a6ff',width:1,dash:'dot'}});
-    traces.push({x:np.map(x=>at(f.target_date,x.time)),y:np.map(x=>x.price),name:`${f.target_date||'下一交易日'}預測中位數`,mode:'lines',line:{color:'#38c793',width:3,dash:'dash'}});
-  }
-  draw('compare-chart',traces,{xaxis:{gridcolor:'#24344e',title:'日期與時間',tickformat:'%m/%d %H:%M'},yaxis:{...chartLayout.yaxis,title:'價格（元）'}});
+  chartData=d;
+  renderSessionChart();
   const ta=d.technical_analysis||{},bars=ta.candles||[],dates=bars.map(x=>x.date);
   const partial=ta.is_intraday?'；最新一根是盤中暫時日 K，收盤後才定案':'';
   document.getElementById('technical-caption').textContent=bars.length
@@ -147,4 +258,3 @@ async function refresh(){try{
 }catch(e){document.getElementById('status').textContent='資料暫時無法讀取';document.getElementById('model-note').textContent=e.message}}
 refresh();setInterval(refresh,60000);setInterval(renderUpdateAge,1000);
 </script></body></html>
-
