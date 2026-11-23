@@ -1,17 +1,17 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-23 13:15:08 CST",
-  "updated_at_epoch": 1795410908,
+  "updated_at": "2026-11-23 13:20:04 CST",
+  "updated_at_epoch": 1795411204,
   "latest_quote": {
     "price": 7.3,
-    "time": "2026-11-23 13:15:08",
+    "time": "2026-11-23 13:20:02",
     "source": "元大 SPARK 即時行情",
-    "bid": 7.29,
-    "ask": 7.3
+    "bid": 7.3,
+    "ask": 7.31
   },
   "today_change_pct": 3.9886042711431813,
-  "today_estimated_volume": 193177,
-  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.035 元（至少 3 天後開始調整）。資料庫目前保存日線 142 筆、5 分 K 3994 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "today_estimated_volume": 194038,
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.035 元（至少 3 天後開始調整）。資料庫目前保存日線 142 筆、5 分 K 3995 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
     "validated_days": 5,
     "required_days": 3,
@@ -22,15 +22,15 @@
   "model_validation": {
     "method": "依日期往前回測，不使用預測日資料；與前收不變基準比較",
     "sessions": 20,
-    "points": 1080,
-    "mae": 0.30886664200172365,
-    "baseline_mae": 0.29958340616579404,
-    "mae_improvement_pct": -3.098714963802808,
+    "points": 1079,
+    "mae": 0.31290255416626805,
+    "baseline_mae": 0.3010936860269259,
+    "mae_improvement_pct": -3.9219912895437288,
     "direction_accuracy_pct": 35.0,
-    "median_close_error": 0.3090064753149724,
-    "coverage_iqr_pct": 16.666666666666664,
-    "from_date": "2026-10-22",
-    "to_date": "2026-11-20"
+    "median_close_error": 0.24768885176842037,
+    "coverage_iqr_pct": 16.96014828544949,
+    "from_date": "2026-10-27",
+    "to_date": "2026-11-23"
   },
   "ml_model": {
     "name": "Ridge 回歸（依模擬績效逐日調參）",
@@ -787,7 +787,7 @@
   "analysis": {
     "stance": "盤中觸發波動提醒｜目前模型曲線未納入這些即時線索，先觀察走勢確認，不提供買賣方向。",
     "confidence_level": "偏低",
-    "confidence_note": "目前以 5 個完整交易日初步比較，逐時平均絕對誤差約 0.379 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.309 元，前收不變基準 0.300 元，模型誤差改善 -3.1%。因此目前不把預測當成可用的買賣訊號。",
+    "confidence_note": "目前以 5 個完整交易日初步比較，逐時平均絕對誤差約 0.379 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.313 元，前收不變基準 0.301 元，模型誤差改善 -3.9%。因此目前不把預測當成可用的買賣訊號。",
     "reasons": [
       "模型估計收盤中位數 6.95 元，相對參考收盤 7.02 元約 -0.96%；估計區間 6.67～7.05 元。",
       "MA5 7.58 元、MA20 8.72 元，短中期均線偏弱排列。",
@@ -800,7 +800,7 @@
   "intraday_signals": {
     "status": "元大即時成交監測中",
     "summary": "出現偏弱波動警示，留意風險；這不是賣出指令。",
-    "as_of": "2026-11-23 13:15:08",
+    "as_of": "2026-11-23 13:20:02",
     "signals": [
       {
         "code": "opening_gap",
@@ -809,7 +809,7 @@
       }
     ],
     "momentum_15m_pct": -0.2732240437158584,
-    "volume_ratio": 0.8781970268673001,
+    "volume_ratio": 0.873978118792705,
     "gap_pct": -2.1367518708556466,
     "momentum_threshold_pct": 1.1482854606099784
   },
@@ -2449,14 +2449,34 @@
         "actual": 7.3
       },
       {
+        "time": "13:16",
+        "predicted": null,
+        "actual": 7.3
+      },
+      {
+        "time": "13:17",
+        "predicted": null,
+        "actual": 7.31
+      },
+      {
+        "time": "13:18",
+        "predicted": null,
+        "actual": 7.31
+      },
+      {
+        "time": "13:19",
+        "predicted": null,
+        "actual": 7.3
+      },
+      {
         "time": "13:20",
         "predicted": 6.9598461625504475,
-        "actual": 7.3
+        "actual": 7.31
       },
       {
         "time": "13:25",
         "predicted": 6.952674315715467,
-        "actual": null
+        "actual": 7.3
       },
       {
         "time": "13:30",
@@ -3713,6 +3733,31 @@
     },
     {
       "time": "13:20",
+      "actual": 7.31,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:16",
+      "actual": 7.3,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:17",
+      "actual": 7.31,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:18",
+      "actual": 7.31,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:19",
+      "actual": 7.3,
+      "date": "2026-11-23"
+    },
+    {
+      "time": "13:25",
       "actual": 7.3,
       "date": "2026-11-23"
     }
@@ -3723,7 +3768,7 @@
     "data_date": "2026-11-23",
     "is_intraday": true,
     "session_count": 74,
-    "latest_bar_count": 52,
+    "latest_bar_count": 53,
     "sufficient_for_macd": true,
     "ma5": 7.578,
     "ma20": 8.7235,
@@ -4623,14 +4668,14 @@
         "high": 7.36,
         "low": 6.81,
         "close": 7.3,
-        "volume": 193177.0,
+        "volume": 194038.0,
         "ma5": 7.578,
         "ma20": 8.7235,
         "macd": -0.7144880646198253,
         "macd_signal": -0.5766139233546426,
         "macd_histogram": -0.13787414126518271,
         "rsi14": 31.54176991936525,
-        "bars": 52
+        "bars": 53
       }
     ]
   }
