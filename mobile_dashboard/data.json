@@ -1,17 +1,17 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-24 09:40:00 CST",
-  "updated_at_epoch": 1795484400,
+  "updated_at": "2026-11-24 12:31:06 CST",
+  "updated_at_epoch": 1795494666,
   "latest_quote": {
-    "price": 7.97,
-    "time": "2026-11-24 09:40:00",
-    "source": "元大 5 分 K（即時訂閱暫未收到）",
-    "bid": null,
-    "ask": null
+    "price": 8.02,
+    "time": "2026-11-24 12:31:05",
+    "source": "元大 SPARK 即時行情",
+    "bid": 8.01,
+    "ask": 8.02
   },
-  "today_change_pct": 9.028728623621607,
-  "today_estimated_volume": null,
-  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 6 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 4004 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "today_change_pct": 9.712723157019475,
+  "today_estimated_volume": 1002611,
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 6 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 4039 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
     "validated_days": 6,
     "required_days": 3,
@@ -798,26 +798,38 @@
   },
   "forecast_reference_price": 7.309999942779541,
   "analysis": {
-    "stance": "模型回測尚未勝過前收不變基準｜先把預測當觀察圖，不提供買賣方向。",
+    "stance": "盤中觸發波動提醒｜目前模型曲線未納入這些即時線索，先觀察走勢確認，不提供買賣方向。",
     "confidence_level": "偏低",
     "confidence_note": "目前以 6 個完整交易日初步比較，逐時平均絕對誤差約 0.347 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.313 元，前收不變基準 0.301 元，模型誤差改善 -3.9%。因此目前不把預測當成可用的買賣訊號。",
     "reasons": [
       "模型估計收盤中位數 7.30 元，相對參考收盤 7.31 元約 -0.10%；估計區間 7.15～7.42 元。",
-      "MA5 7.58 元、MA20 8.63 元，短中期均線偏弱排列。",
-      "MACD -0.6746、訊號線 -0.5961，目前在訊號線下方；柱狀值 -0.0785。",
-      "RSI14 40.8，目前未到常見偏熱或偏弱區。"
+      "MA5 7.59 元、MA20 8.63 元，短中期均線偏弱排列。",
+      "MACD -0.6706、訊號線 -0.5953，目前在訊號線下方；柱狀值 -0.0753。",
+      "RSI14 41.4，目前未到常見偏熱或偏弱區。",
+      "盤中監測：開盤跳空 +9.99%；截至目前成交量約為過去同時段中位數的 5.2 倍。這些是即時風險線索，尚未用來改寫模型價格曲線。"
     ],
     "forecast_change_pct": -0.102012188150713
   },
   "intraday_signals": {
-    "status": "非盤中或即時報價過舊",
-    "summary": "收盤後或沒有新鮮報價；盤中異常訊號暫停更新。",
-    "as_of": null,
-    "signals": [],
-    "momentum_15m_pct": null,
-    "volume_ratio": null,
-    "gap_pct": null,
-    "momentum_threshold_pct": null
+    "status": "元大即時成交監測中",
+    "summary": "出現偏強波動提醒，留意追價風險；這不是買進指令。",
+    "as_of": "2026-11-24 12:31:05",
+    "signals": [
+      {
+        "code": "opening_gap",
+        "direction": "up",
+        "message": "開盤跳空 +9.99%"
+      },
+      {
+        "code": "volume_surge",
+        "direction": "neutral",
+        "message": "截至目前成交量約為過去同時段中位數的 5.2 倍"
+      }
+    ],
+    "momentum_15m_pct": 0.12484394506866447,
+    "volume_ratio": 5.155355705871313,
+    "gap_pct": 9.986320970378614,
+    "momentum_threshold_pct": 1.2586773839970677
   },
   "comparison_forecast": {
     "target_date": "2026-11-24",
@@ -1254,7 +1266,7 @@
       {
         "time": "09:35",
         "predicted": 7.305974620598759,
-        "actual": 7.97
+        "actual": 7.98
       },
       {
         "time": "09:36",
@@ -1269,172 +1281,177 @@
       {
         "time": "09:45",
         "predicted": 7.312902006601315,
-        "actual": null
+        "actual": 7.99
       },
       {
         "time": "09:50",
         "predicted": 7.305832374265818,
-        "actual": null
+        "actual": 7.94
       },
       {
         "time": "09:55",
         "predicted": 7.312312989131572,
-        "actual": null
+        "actual": 7.94
       },
       {
         "time": "10:00",
         "predicted": 7.29170983231902,
-        "actual": null
+        "actual": 7.93
       },
       {
         "time": "10:05",
         "predicted": 7.2915174171727175,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "10:10",
         "predicted": 7.300930411381159,
-        "actual": null
+        "actual": 7.96
       },
       {
         "time": "10:15",
         "predicted": 7.292451136028592,
-        "actual": null
+        "actual": 7.99
       },
       {
         "time": "10:20",
         "predicted": 7.308778172963821,
-        "actual": null
+        "actual": 7.99
       },
       {
         "time": "10:25",
         "predicted": 7.320554251856594,
-        "actual": null
+        "actual": 7.97
       },
       {
         "time": "10:30",
         "predicted": 7.316004889739347,
-        "actual": null
+        "actual": 7.96
       },
       {
         "time": "10:35",
         "predicted": 7.316267209182356,
-        "actual": null
+        "actual": 7.96
       },
       {
         "time": "10:40",
         "predicted": 7.312456346143517,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "10:45",
         "predicted": 7.319539705907097,
-        "actual": null
+        "actual": 7.96
       },
       {
         "time": "10:50",
         "predicted": 7.326623065670678,
-        "actual": null
+        "actual": 7.96
       },
       {
         "time": "10:55",
         "predicted": 7.319406514491825,
-        "actual": null
+        "actual": 7.96
       },
       {
         "time": "11:00",
         "predicted": 7.318964181434026,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "11:05",
         "predicted": 7.3088803476915185,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "11:10",
         "predicted": 7.3088803476915185,
-        "actual": null
+        "actual": 7.94
       },
       {
         "time": "11:15",
         "predicted": 7.310649900747548,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "11:20",
         "predicted": 7.308369067075382,
-        "actual": null
+        "actual": 7.94
       },
       {
         "time": "11:25",
         "predicted": 7.272387308635389,
-        "actual": null
+        "actual": 7.94
       },
       {
         "time": "11:30",
         "predicted": 7.281582277337478,
-        "actual": null
+        "actual": 7.94
       },
       {
         "time": "11:35",
         "predicted": 7.309416122869318,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "11:40",
         "predicted": 7.31673775724632,
-        "actual": null
+        "actual": 7.95
       },
       {
         "time": "11:45",
         "predicted": 7.293182148530519,
-        "actual": null
+        "actual": 7.97
       },
       {
         "time": "11:50",
         "predicted": 7.313189213650489,
-        "actual": null
+        "actual": 7.98
       },
       {
         "time": "11:55",
         "predicted": 7.320991601822121,
-        "actual": null
+        "actual": 7.99
       },
       {
         "time": "12:00",
         "predicted": 7.313424313977143,
-        "actual": null
+        "actual": 7.98
       },
       {
         "time": "12:05",
         "predicted": 7.309875770381313,
-        "actual": null
+        "actual": 7.99
       },
       {
         "time": "12:10",
         "predicted": 7.298759938940505,
-        "actual": null
+        "actual": 8.0
       },
       {
         "time": "12:15",
         "predicted": 7.294975947607364,
-        "actual": null
+        "actual": 8.01
       },
       {
         "time": "12:20",
         "predicted": 7.302190489070295,
-        "actual": null
+        "actual": 8.01
       },
       {
         "time": "12:25",
         "predicted": 7.302307943341562,
-        "actual": null
+        "actual": 8.02
       },
       {
         "time": "12:30",
         "predicted": 7.295798828275524,
-        "actual": null
+        "actual": 8.02
+      },
+      {
+        "time": "12:31",
+        "predicted": null,
+        "actual": 8.02
       },
       {
         "time": "12:35",
@@ -1531,7 +1548,7 @@
     },
     {
       "time": "09:35",
-      "actual": 7.97,
+      "actual": 7.98,
       "date": "2026-11-24"
     },
     {
@@ -1543,6 +1560,181 @@
       "time": "09:36",
       "actual": 7.98,
       "date": "2026-11-24"
+    },
+    {
+      "time": "09:45",
+      "actual": 7.99,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "09:50",
+      "actual": 7.94,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "09:55",
+      "actual": 7.94,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:00",
+      "actual": 7.93,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:05",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:10",
+      "actual": 7.96,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:15",
+      "actual": 7.99,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:20",
+      "actual": 7.99,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:25",
+      "actual": 7.97,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:30",
+      "actual": 7.96,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:35",
+      "actual": 7.96,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:40",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:45",
+      "actual": 7.96,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:50",
+      "actual": 7.96,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "10:55",
+      "actual": 7.96,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:00",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:05",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:10",
+      "actual": 7.94,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:15",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:20",
+      "actual": 7.94,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:25",
+      "actual": 7.94,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:30",
+      "actual": 7.94,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:35",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:40",
+      "actual": 7.95,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:45",
+      "actual": 7.97,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:50",
+      "actual": 7.98,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "11:55",
+      "actual": 7.99,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:00",
+      "actual": 7.98,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:05",
+      "actual": 7.99,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:10",
+      "actual": 8.0,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:15",
+      "actual": 8.01,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:20",
+      "actual": 8.01,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:25",
+      "actual": 8.02,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:30",
+      "actual": 8.02,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "12:31",
+      "actual": 8.02,
+      "date": "2026-11-24"
     }
   ],
   "technical_analysis": {
@@ -1551,14 +1743,14 @@
     "data_date": "2026-11-24",
     "is_intraday": true,
     "session_count": 75,
-    "latest_bar_count": 8,
+    "latest_bar_count": 43,
     "sufficient_for_macd": true,
-    "ma5": 7.5840000000000005,
-    "ma20": 8.6295,
-    "macd": -0.6746215372236719,
-    "macd_signal": -0.5960878108008132,
-    "macd_histogram": -0.07853372642285872,
-    "rsi14": 40.768589241658425,
+    "ma5": 7.593999999999999,
+    "ma20": 8.632000000000001,
+    "macd": -0.6706329332350673,
+    "macd_signal": -0.5952900900030923,
+    "macd_histogram": -0.07534284323197504,
+    "rsi14": 41.359042941819375,
     "candles": [
       {
         "date": "2026-08-26",
@@ -2449,16 +2641,16 @@
         "date": "2026-11-24",
         "open": 8.04,
         "high": 8.04,
-        "low": 7.94,
-        "close": 7.97,
-        "volume": 388632.0,
-        "ma5": 7.5840000000000005,
-        "ma20": 8.6295,
-        "macd": -0.6746215372236719,
-        "macd_signal": -0.5960878108008132,
-        "macd_histogram": -0.07853372642285872,
-        "rsi14": 40.768589241658425,
-        "bars": 8
+        "low": 7.92,
+        "close": 8.02,
+        "volume": 1002574.0,
+        "ma5": 7.593999999999999,
+        "ma20": 8.632000000000001,
+        "macd": -0.6706329332350673,
+        "macd_signal": -0.5952900900030923,
+        "macd_histogram": -0.07534284323197504,
+        "rsi14": 41.359042941819375,
+        "bars": 43
       }
     ]
   }
