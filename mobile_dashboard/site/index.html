@@ -22,6 +22,9 @@
     .session-legend span{display:inline-flex;align-items:center;gap:5px}
     .session-legend i{width:16px;height:3px;border-radius:2px;background:var(--swatch)}
     .session-legend .band{height:9px;background:#58a6ff40;border:1px solid #58a6ff70}
+    .opening-toggle{display:flex;align-items:center;gap:8px;min-height:44px;font-size:14px;color:#d6e2f2}
+    .opening-toggle[hidden]{display:none}
+    .opening-toggle input{width:18px;height:18px;accent-color:#c3a2ff}
     .chart,.chart-small{touch-action:pan-y}
     @media(max-width:699px){
       main{padding-inline:10px}.card{padding:12px}.chart{height:300px}
@@ -39,7 +42,14 @@
   </section>
   <section class="card callout"><div class="muted">路徑圖參考方法</div><strong>歷史相似交易日（輔助參考）</strong><div class="note" id="model-note"></div></section>
   <section class="card"><h2>機器學習預測｜Ridge 回歸</h2><div class="grid"><div class="metric"><div class="label">下一交易日預測報酬</div><div class="value" id="ml-return">—</div></div><div class="metric"><div class="label">預測收盤估值</div><div class="value" id="ml-close">—</div></div><div class="metric"><div class="label">逐日回測 MAE</div><div class="value" id="ml-mae">—</div></div><div class="metric"><div class="label">簡單基準 MAE</div><div class="value" id="ml-base">—</div></div></div><div class="decision" id="ml-verdict">等待模型資料</div><div class="note" id="ml-details">以過去可得特徵逐日訓練與測試；資料不足或誤差未勝過基準時，不提供方向判斷。</div><div id="ml-chart" class="chart-small"></div></section>
-  <section class="card"><h2>盤中波動訊號</h2><div class="decision" id="intraday-summary">等待元大盤中報價</div><div class="muted" id="intraday-status">訊號只作風險提醒，不是買賣指令。</div><ul class="reasons" id="intraday-items"></ul><div class="note">監測開盤跳空、近 15 分鐘急漲急跌、同時段成交量異常及短線區間突破。沒有觸發門檻不代表沒有風險；這些即時線索目前不會改寫預測價格曲線。</div></section>
+  <section class="card">
+    <h2>盤中波動訊號</h2>
+    <div class="decision" id="intraday-summary">等待元大盤中報價</div>
+    <div class="muted" id="intraday-status">訊號只作風險提醒，不是買賣指令。</div>
+    <ul class="reasons" id="intraday-items"></ul>
+    <div class="decision" id="opening-summary">09:15 更新 · 等待發布器資料</div>
+    <div class="note" id="opening-validation">使用開盤後前三根完整的 5 分 K，保留開盤前的預測。</div>
+  </section>
   <section class="card"><h2>模型最近回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">回測只用預測日前的資料，並和「價格維持前一收盤價」比較。誤差越小越好。</div></section>
   <section class="card"><h2>訊號與風險說明</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">依歷史誤差與樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">若模型未在歷史回測中勝過簡單基準，網站會標示不提供買進或賣出方向。資料不含新聞、ETF 折溢價、成分股資金流及個人持倉。</div></section>
   <section class="card">
@@ -49,6 +59,7 @@
       <button type="button" id="show-forecast" aria-pressed="false" aria-controls="compare-chart">下一交易日預測</button>
     </div>
     <div class="muted" id="compare-caption" aria-live="polite">等待盤中資料</div>
+    <label class="opening-toggle" id="opening-toggle" hidden><input type="checkbox" id="show-opening" aria-controls="compare-chart">加看 09:15 更新線</label>
     <div id="compare-legend" class="session-legend"></div>
     <div id="compare-chart" class="chart"></div>
   </section>
@@ -136,6 +147,10 @@ function renderSessionChart(){
     sessionView=!hasComparison&&hasNext?'forecast':'compare';
   }
   const isForecast=sessionView==='forecast';
+  const opening=chartData.opening_reforecast||{};
+  const openingPoints=opening.target_date===comparison.target_date?sessionPoints(opening.points||[]):[];
+  const openingToggle=document.getElementById('opening-toggle');
+  openingToggle.hidden=isForecast||!openingPoints.length;
   document.getElementById('show-comparison').setAttribute('aria-pressed',String(!isForecast));
   const nextButton=document.getElementById('show-forecast');
   nextButton.setAttribute('aria-pressed',String(isForecast));
@@ -160,6 +175,9 @@ function renderSessionChart(){
   }else{
     addLine(predicted,'predicted','開盤前預測','#58a6ff','dash');
     addLine(actual,'actual','當日實際','#ff9d4d');
+    if(!openingToggle.hidden&&document.getElementById('show-opening').checked){
+      addLine(openingPoints,'price','09:15 更新','#c3a2ff','dot');
+    }
   }
 
   const date=isForecast?forecast.target_date:comparison.target_date;
@@ -187,6 +205,7 @@ function renderSessionChart(){
 for(const [id,view] of [['show-comparison','compare'],['show-forecast','forecast']]){
   document.getElementById(id).addEventListener('click',()=>{sessionView=view;renderSessionChart();});
 }
+document.getElementById('show-opening').addEventListener('change',renderSessionChart);
 async function refresh(){try{
   const res=await fetch(dataUrl()+'?t='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('資料尚未發布'); const d=await res.json();
   publishedAtMs=parsePublishedAt(d);renderUpdateAge();
@@ -215,6 +234,13 @@ async function refresh(){try{
   document.getElementById('intraday-status').textContent=intraday.as_of?`${intraday.status||'盤中監測'}；計算時間 ${intraday.as_of}`:(intraday.status||'等待發布器資料');
   const intradayList=document.getElementById('intraday-items');intradayList.replaceChildren();
   (intraday.signals||[]).forEach(signal=>{const item=document.createElement('li');item.textContent=signal.message;intradayList.appendChild(item);});
+  const opening=d.opening_reforecast||{}, ot=opening.backtest||{};
+  document.getElementById('opening-summary').textContent=opening.close_estimate!=null
+    ?`${opening.target_date} 09:15 更新 · 收盤估計 ${fmt(opening.close_estimate)} 元（${opening.return_pct>=0?'+':''}${fmt(opening.return_pct)}%）${opening.generated_at?` · ${opening.generated_at} 產生`:''}`
+    :'09:15 更新 · 等待完整的開盤行情與訓練資料';
+  document.getElementById('opening-validation').textContent=ot.days
+    ?`逐日回放 ${ot.days} 天。實際漲跌達 ±${ot.threshold_pct}% 有 ${ot.actual_tail_days} 天，方向與幅度命中 ${ot.hits} 天、漏報 ${ot.misses} 天、誤報 ${ot.false_alerts} 次。平均報酬誤差 ${fmt(ot.mae_pct)}%。沿用 09:15 價格的基準命中 ${ot.baseline_hits} 天、誤差 ${fmt(ot.baseline_pct)}%。`
+    :'使用開盤後前三根完整的 5 分 K，保留開盤前的預測。';
   const v=d.model_validation||{},vSummary=document.getElementById('validation-summary'),vDetail=document.getElementById('validation-detail');
   if(Number(v.sessions)>0&&Number.isFinite(Number(v.mae))&&Number.isFinite(Number(v.baseline_mae))){
     const better=Number(v.mae_improvement_pct)>0;
