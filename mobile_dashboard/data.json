@@ -1,16 +1,16 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-24 09:35:52 CST",
-  "updated_at_epoch": 1795484152,
+  "updated_at": "2026-11-24 09:40:00 CST",
+  "updated_at_epoch": 1795484400,
   "latest_quote": {
     "price": 7.97,
-    "time": "2026-11-24 09:35:52",
-    "source": "元大 SPARK 即時行情",
+    "time": "2026-11-24 09:40:00",
+    "source": "元大 5 分 K（即時訂閱暫未收到）",
     "bid": null,
     "ask": null
   },
   "today_change_pct": 9.028728623621607,
-  "today_estimated_volume": 388644,
+  "today_estimated_volume": null,
   "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 6 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 4004 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
     "validated_days": 6,
@@ -798,38 +798,26 @@
   },
   "forecast_reference_price": 7.309999942779541,
   "analysis": {
-    "stance": "盤中觸發波動提醒｜目前模型曲線未納入這些即時線索，先觀察走勢確認，不提供買賣方向。",
+    "stance": "模型回測尚未勝過前收不變基準｜先把預測當觀察圖，不提供買賣方向。",
     "confidence_level": "偏低",
     "confidence_note": "目前以 6 個完整交易日初步比較，逐時平均絕對誤差約 0.347 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.313 元，前收不變基準 0.301 元，模型誤差改善 -3.9%。因此目前不把預測當成可用的買賣訊號。",
     "reasons": [
       "模型估計收盤中位數 7.30 元，相對參考收盤 7.31 元約 -0.10%；估計區間 7.15～7.42 元。",
       "MA5 7.58 元、MA20 8.63 元，短中期均線偏弱排列。",
       "MACD -0.6746、訊號線 -0.5961，目前在訊號線下方；柱狀值 -0.0785。",
-      "RSI14 40.8，目前未到常見偏熱或偏弱區。",
-      "盤中監測：開盤跳空 +9.99%；截至目前成交量約為過去同時段中位數的 5.9 倍。這些是即時風險線索，尚未用來改寫模型價格曲線。"
+      "RSI14 40.8，目前未到常見偏熱或偏弱區。"
     ],
     "forecast_change_pct": -0.102012188150713
   },
   "intraday_signals": {
-    "status": "元大即時成交監測中",
-    "summary": "出現偏強波動提醒，留意追價風險；這不是買進指令。",
-    "as_of": "2026-11-24 09:35:52",
-    "signals": [
-      {
-        "code": "opening_gap",
-        "direction": "up",
-        "message": "開盤跳空 +9.99%"
-      },
-      {
-        "code": "volume_surge",
-        "direction": "neutral",
-        "message": "截至目前成交量約為過去同時段中位數的 5.9 倍"
-      }
-    ],
-    "momentum_15m_pct": -0.8706467661691475,
-    "volume_ratio": 5.866678742867494,
-    "gap_pct": 9.986320970378614,
-    "momentum_threshold_pct": 1.2586773839970677
+    "status": "非盤中或即時報價過舊",
+    "summary": "收盤後或沒有新鮮報價；盤中異常訊號暫停更新。",
+    "as_of": null,
+    "signals": [],
+    "momentum_15m_pct": null,
+    "volume_ratio": null,
+    "gap_pct": null,
+    "momentum_threshold_pct": null
   },
   "comparison_forecast": {
     "target_date": "2026-11-24",
@@ -1269,9 +1257,14 @@
         "actual": 7.97
       },
       {
+        "time": "09:36",
+        "predicted": null,
+        "actual": 7.98
+      },
+      {
         "time": "09:40",
         "predicted": 7.3053318040956885,
-        "actual": null
+        "actual": 7.97
       },
       {
         "time": "09:45",
@@ -1539,6 +1532,16 @@
     {
       "time": "09:35",
       "actual": 7.97,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "09:40",
+      "actual": 7.97,
+      "date": "2026-11-24"
+    },
+    {
+      "time": "09:36",
+      "actual": 7.98,
       "date": "2026-11-24"
     }
   ],
