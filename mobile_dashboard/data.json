@@ -1,23 +1,23 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-23 22:34:05 CST",
-  "updated_at_epoch": 1795444445,
+  "updated_at": "2026-11-24 09:35:52 CST",
+  "updated_at_epoch": 1795484152,
   "latest_quote": {
-    "price": 7.309999942779541,
-    "time": "2026-11-23 收盤",
-    "source": "最近收盤價（Yahoo Finance）",
+    "price": 7.97,
+    "time": "2026-11-24 09:35:52",
+    "source": "元大 SPARK 即時行情",
     "bid": null,
     "ask": null
   },
-  "today_change_pct": 4.131053598874113,
-  "today_estimated_volume": null,
-  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 5 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 3996 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "today_change_pct": 9.028728623621607,
+  "today_estimated_volume": 388644,
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 6 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 4004 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
-    "validated_days": 5,
+    "validated_days": 6,
     "required_days": 3,
-    "bias_per_share": -0.3477566270478575,
+    "bias_per_share": -0.1736860615828581,
     "correction_per_share": -0.036549999713897705,
-    "recent_mae": 0.37886626160711884
+    "recent_mae": 0.34700993689912646
   },
   "model_validation": {
     "method": "依日期往前回測，不使用預測日資料；與前收不變基準比較",
@@ -35,8 +35,8 @@
   "ml_model": {
     "name": "Ridge 回歸（依模擬績效逐日調參）",
     "target": "下一交易日收盤報酬率",
-    "forecast_return_pct": 1.4363326358839497,
-    "forecast_close": 7.414995857640781,
+    "forecast_return_pct": 1.4363441891909559,
+    "forecast_close": 7.414996702187517,
     "backtest": {
       "n": 91,
       "mae": 0.02541435840365814,
@@ -351,7 +351,7 @@
     "tuning": {
       "as_of": "2026-11-23",
       "alpha": 100.0,
-      "prediction_pct": 1.4363326358839497,
+      "prediction_pct": 1.4363441891909559,
       "train_days": 121,
       "validation_days": 20
     },
@@ -393,6 +393,12 @@
       "date": "2026-11-20",
       "median_error": -0.4568069961276593,
       "mae": 0.4529913762677435,
+      "samples": 54
+    },
+    {
+      "date": "2026-11-23",
+      "median_error": 0.2944384287108557,
+      "mae": 0.2613393599884166,
       "samples": 54
     }
   ],
@@ -792,3051 +798,765 @@
   },
   "forecast_reference_price": 7.309999942779541,
   "analysis": {
-    "stance": "模型回測尚未勝過前收不變基準｜先把預測當觀察圖，不提供買賣方向。",
+    "stance": "盤中觸發波動提醒｜目前模型曲線未納入這些即時線索，先觀察走勢確認，不提供買賣方向。",
     "confidence_level": "偏低",
-    "confidence_note": "目前以 5 個完整交易日初步比較，逐時平均絕對誤差約 0.379 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.313 元，前收不變基準 0.301 元，模型誤差改善 -3.9%。因此目前不把預測當成可用的買賣訊號。",
+    "confidence_note": "目前以 6 個完整交易日初步比較，逐時平均絕對誤差約 0.347 元；樣本還少，信心不穩。 另以 20 個完整交易日做逐日回測：價格路徑 MAE 0.313 元，前收不變基準 0.301 元，模型誤差改善 -3.9%。因此目前不把預測當成可用的買賣訊號。",
     "reasons": [
       "模型估計收盤中位數 7.30 元，相對參考收盤 7.31 元約 -0.10%；估計區間 7.15～7.42 元。",
-      "MA5 7.58 元、MA20 8.72 元，短中期均線偏弱排列。",
-      "MACD -0.7137、訊號線 -0.5765，目前在訊號線下方；柱狀值 -0.1372。",
-      "RSI14 31.7，目前未到常見偏熱或偏弱區。"
+      "MA5 7.58 元、MA20 8.63 元，短中期均線偏弱排列。",
+      "MACD -0.6746、訊號線 -0.5961，目前在訊號線下方；柱狀值 -0.0785。",
+      "RSI14 40.8，目前未到常見偏熱或偏弱區。",
+      "盤中監測：開盤跳空 +9.99%；截至目前成交量約為過去同時段中位數的 5.9 倍。這些是即時風險線索，尚未用來改寫模型價格曲線。"
     ],
     "forecast_change_pct": -0.102012188150713
   },
   "intraday_signals": {
-    "status": "非盤中或即時報價過舊",
-    "summary": "收盤後或沒有新鮮報價；盤中異常訊號暫停更新。",
-    "as_of": null,
-    "signals": [],
-    "momentum_15m_pct": null,
-    "volume_ratio": null,
-    "gap_pct": null,
-    "momentum_threshold_pct": null
+    "status": "元大即時成交監測中",
+    "summary": "出現偏強波動提醒，留意追價風險；這不是買進指令。",
+    "as_of": "2026-11-24 09:35:52",
+    "signals": [
+      {
+        "code": "opening_gap",
+        "direction": "up",
+        "message": "開盤跳空 +9.99%"
+      },
+      {
+        "code": "volume_surge",
+        "direction": "neutral",
+        "message": "截至目前成交量約為過去同時段中位數的 5.9 倍"
+      }
+    ],
+    "momentum_15m_pct": -0.8706467661691475,
+    "volume_ratio": 5.866678742867494,
+    "gap_pct": 9.986320970378614,
+    "momentum_threshold_pct": 1.2586773839970677
   },
   "comparison_forecast": {
-    "target_date": "2026-11-23",
+    "target_date": "2026-11-24",
     "sample_count": 20,
-    "close_median": 6.952674315715467,
-    "close_low": 6.6674562543089015,
-    "close_high": 7.046375974453008,
+    "close_median": 7.302542851884096,
+    "close_low": 7.14582403056665,
+    "close_high": 7.422461852136442,
     "points": [
       {
+        "time": "09:00",
+        "price": 7.29273583692717,
+        "low": 7.247995760168806,
+        "high": 7.373887179341099,
+        "volume_cumulative": 0.0
+      },
+      {
         "time": "09:05",
-        "price": 6.9810497491003884,
-        "low": 6.830838337319531,
-        "high": 7.078828519642663,
-        "volume_cumulative": 22208.197392222104
+        "price": 7.302095416254599,
+        "low": 7.243193952691889,
+        "high": 7.3748204467618175,
+        "volume_cumulative": 23273.497063994768
       },
       {
         "time": "09:10",
-        "price": 6.951859142157446,
-        "low": 6.835300948716232,
-        "high": 7.0637495935417265,
-        "volume_cumulative": 33415.033667022304
+        "price": 7.281691252947548,
+        "low": 7.230376606616573,
+        "high": 7.361706655721838,
+        "volume_cumulative": 35119.67366386403
       },
       {
         "time": "09:15",
-        "price": 6.9658590822183175,
-        "low": 6.827655945975444,
-        "high": 7.073278659341167,
-        "volume_cumulative": 41554.2946461181
+        "price": 7.298837657549828,
+        "low": 7.23212981802911,
+        "high": 7.353657420715276,
+        "volume_cumulative": 44870.28475024232
       },
       {
         "time": "09:20",
-        "price": 6.975390607455386,
-        "low": 6.8146237676699775,
-        "high": 7.078880224518483,
-        "volume_cumulative": 49610.899896183524
+        "price": 7.305856486937394,
+        "low": 7.221041283271962,
+        "high": 7.361790282246155,
+        "volume_cumulative": 52017.820588102695
       },
       {
         "time": "09:25",
-        "price": 6.957220959969367,
-        "low": 6.811728922627329,
-        "high": 7.067098428378579,
-        "volume_cumulative": 57045.84093072479
+        "price": 7.288649149793421,
+        "low": 7.202328512108286,
+        "high": 7.336412107030919,
+        "volume_cumulative": 58891.04420209408
       },
       {
         "time": "09:30",
-        "price": 6.956057576772616,
-        "low": 6.760381789680873,
-        "high": 7.0605626869522675,
-        "volume_cumulative": 64501.154856224246
+        "price": 7.284781538476075,
+        "low": 7.226643045489686,
+        "high": 7.360698227581366,
+        "volume_cumulative": 64555.23829542637
       },
       {
         "time": "09:35",
-        "price": 6.932815724431448,
-        "low": 6.76866438948504,
-        "high": 7.083952478784038,
-        "volume_cumulative": 70012.8949843125
+        "price": 7.305974620598759,
+        "low": 7.225309567331275,
+        "high": 7.388873623724273,
+        "volume_cumulative": 70612.591829058
       },
       {
         "time": "09:40",
-        "price": 6.952424036352423,
-        "low": 6.797752351695589,
-        "high": 7.054646826263757,
-        "volume_cumulative": 75447.21812675963
+        "price": 7.3053318040956885,
+        "low": 7.2274107533785985,
+        "high": 7.361886986992881,
+        "volume_cumulative": 76189.41715787932
       },
       {
         "time": "09:45",
-        "price": 6.95726214411208,
-        "low": 6.773462491577497,
-        "high": 7.058263534464085,
-        "volume_cumulative": 79398.97689004944
+        "price": 7.312902006601315,
+        "low": 7.227201389292518,
+        "high": 7.353031722323548,
+        "volume_cumulative": 80795.54981628835
       },
       {
         "time": "09:50",
-        "price": 6.941522684561461,
-        "low": 6.7181253783071675,
-        "high": 7.047413409863103,
-        "volume_cumulative": 82865.27876593554
+        "price": 7.305832374265818,
+        "low": 7.223580038003988,
+        "high": 7.357505099526721,
+        "volume_cumulative": 85584.12901235263
       },
       {
         "time": "09:55",
-        "price": 6.90812266905625,
-        "low": 6.73888674930339,
-        "high": 7.05511180597201,
-        "volume_cumulative": 86453.23590497197
+        "price": 7.312312989131572,
+        "low": 7.1936866057589395,
+        "high": 7.364819413763129,
+        "volume_cumulative": 89684.67918789305
       },
       {
         "time": "10:00",
-        "price": 6.897371740225932,
-        "low": 6.7244687516381365,
-        "high": 7.031841088293638,
-        "volume_cumulative": 91554.02571830362
+        "price": 7.29170983231902,
+        "low": 7.162318055730188,
+        "high": 7.3602664150300185,
+        "volume_cumulative": 95016.10107522033
       },
       {
         "time": "10:05",
-        "price": 6.892931461810642,
-        "low": 6.733069069883797,
-        "high": 7.070874092808936,
-        "volume_cumulative": 96447.01204386173
+        "price": 7.2915174171727175,
+        "low": 7.170863350273791,
+        "high": 7.363020693277755,
+        "volume_cumulative": 98734.41290602527
       },
       {
         "time": "10:10",
-        "price": 6.888316502431598,
-        "low": 6.745755816545736,
-        "high": 7.067098428378579,
-        "volume_cumulative": 100220.65353191708
+        "price": 7.300930411381159,
+        "low": 7.177759576800357,
+        "high": 7.355412933503988,
+        "volume_cumulative": 101647.77575203433
       },
       {
         "time": "10:15",
-        "price": 6.884475204952629,
-        "low": 6.735300354991708,
-        "high": 7.053421054550157,
-        "volume_cumulative": 103390.67536501124
+        "price": 7.292451136028592,
+        "low": 7.178725228009443,
+        "high": 7.354345626672181,
+        "volume_cumulative": 105393.0691130559
       },
       {
         "time": "10:20",
-        "price": 6.885987932127137,
-        "low": 6.73888674930339,
-        "high": 7.043476447132823,
-        "volume_cumulative": 106292.93920265492
+        "price": 7.308778172963821,
+        "low": 7.191952249345806,
+        "high": 7.3602664150300185,
+        "volume_cumulative": 109031.07877059709
       },
       {
         "time": "10:25",
-        "price": 6.884176248621372,
-        "low": 6.7564566148930885,
-        "high": 7.020876111752205,
-        "volume_cumulative": 109031.63783003429
+        "price": 7.320554251856594,
+        "low": 7.195863955984243,
+        "high": 7.363943477530708,
+        "volume_cumulative": 111612.31182798726
       },
       {
         "time": "10:30",
-        "price": 6.910108470259185,
-        "low": 6.73609435382378,
-        "high": 7.03125582563994,
-        "volume_cumulative": 112609.69956489104
+        "price": 7.316004889739347,
+        "low": 7.213154524695803,
+        "high": 7.370741143182168,
+        "volume_cumulative": 114950.95498360117
       },
       {
         "time": "10:35",
-        "price": 6.899164060647442,
-        "low": 6.723139302241146,
-        "high": 7.029565074218088,
-        "volume_cumulative": 115813.48218871592
+        "price": 7.316267209182356,
+        "low": 7.216600998215188,
+        "high": 7.3709973991880355,
+        "volume_cumulative": 119515.33051191305
       },
       {
         "time": "10:40",
-        "price": 6.892172028767363,
-        "low": 6.754867851027475,
-        "high": 7.027874322796235,
-        "volume_cumulative": 117858.33835831926
+        "price": 7.312456346143517,
+        "low": 7.210925532331457,
+        "high": 7.382752750076014,
+        "volume_cumulative": 122461.45664461373
       },
       {
         "time": "10:45",
-        "price": 6.862509525937947,
-        "low": 6.778138568705847,
-        "high": 7.029800279574711,
-        "volume_cumulative": 119821.12088149105
+        "price": 7.319539705907097,
+        "low": 7.214677711469253,
+        "high": 7.398694509236721,
+        "volume_cumulative": 125811.02089579152
       },
       {
         "time": "10:50",
-        "price": 6.863241444469227,
-        "low": 6.750209905523837,
-        "high": 7.016039062843271,
-        "volume_cumulative": 122892.1886727883
+        "price": 7.326623065670678,
+        "low": 7.204916145576185,
+        "high": 7.398823074412246,
+        "volume_cumulative": 128791.83756734214
       },
       {
         "time": "10:55",
-        "price": 6.857204948031859,
-        "low": 6.744392226104244,
-        "high": 7.017729814265123,
-        "volume_cumulative": 126185.6120168292
+        "price": 7.319406514491825,
+        "low": 7.198162698159765,
+        "high": 7.385647555650119,
+        "volume_cumulative": 131592.77737078193
       },
       {
         "time": "11:00",
-        "price": 6.867992849882146,
-        "low": 6.736889118857321,
-        "high": 7.0126575599995675,
-        "volume_cumulative": 128498.22618188302
+        "price": 7.318964181434026,
+        "low": 7.22330608298036,
+        "high": 7.380251394193993,
+        "volume_cumulative": 134356.45696582735
       },
       {
         "time": "11:05",
-        "price": 6.86714539289325,
-        "low": 6.714038949890889,
-        "high": 7.016274268199894,
-        "volume_cumulative": 130558.7985816541
+        "price": 7.3088803476915185,
+        "low": 7.239880943501336,
+        "high": 7.387439189178387,
+        "volume_cumulative": 138160.85272637106
       },
       {
         "time": "11:10",
-        "price": 6.869067049032423,
-        "low": 6.731129843410598,
-        "high": 7.014912521471734,
-        "volume_cumulative": 131841.12654682237
+        "price": 7.3088803476915185,
+        "low": 7.234205477617604,
+        "high": 7.399257859111498,
+        "volume_cumulative": 140677.8440451502
       },
       {
         "time": "11:15",
-        "price": 6.862056093545865,
-        "low": 6.727251390464204,
-        "high": 7.03299386840771,
-        "volume_cumulative": 133656.6421724964
+        "price": 7.310649900747548,
+        "low": 7.222660488804295,
+        "high": 7.407756252187567,
+        "volume_cumulative": 144844.56321145996
       },
       {
         "time": "11:20",
-        "price": 6.869067049032423,
-        "low": 6.7418773635993405,
-        "high": 7.006082209695154,
-        "volume_cumulative": 135173.54942498324
+        "price": 7.308369067075382,
+        "low": 7.226272052368449,
+        "high": 7.410728316024334,
+        "volume_cumulative": 146802.65140432338
       },
       {
         "time": "11:25",
-        "price": 6.873646909313161,
-        "low": 6.761445358418168,
-        "high": 6.984899909476971,
-        "volume_cumulative": 136912.23014761496
+        "price": 7.272387308635389,
+        "low": 7.220838454871744,
+        "high": 7.414347127740514,
+        "volume_cumulative": 149029.2700645808
       },
       {
         "time": "11:30",
-        "price": 6.873646909313161,
-        "low": 6.745652781104132,
-        "high": 6.994904232483665,
-        "volume_cumulative": 138480.3606687967
+        "price": 7.281582277337478,
+        "low": 7.226272052368449,
+        "high": 7.408831533989482,
+        "volume_cumulative": 150948.81321427762
       },
       {
         "time": "11:35",
-        "price": 6.886848204205479,
-        "low": 6.750912521229315,
-        "high": 7.010497304128706,
-        "volume_cumulative": 140469.33690891473
+        "price": 7.309416122869318,
+        "low": 7.2299161202335505,
+        "high": 7.4052127222732995,
+        "volume_cumulative": 153267.93997813488
       },
       {
         "time": "11:40",
-        "price": 6.8944991304891206,
-        "low": 6.729754530944941,
-        "high": 7.016703868700946,
-        "volume_cumulative": 142427.46277129606
+        "price": 7.31673775724632,
+        "low": 7.224450018435898,
+        "high": 7.408918910166244,
+        "volume_cumulative": 155519.6129164506
       },
       {
         "time": "11:45",
-        "price": 6.8944991304891206,
-        "low": 6.723936851525348,
-        "high": 6.998789857551176,
-        "volume_cumulative": 144025.27950501686
+        "price": 7.293182148530519,
+        "low": 7.217613525762952,
+        "high": 7.401593910557119,
+        "volume_cumulative": 157767.43135044965
       },
       {
         "time": "11:50",
-        "price": 6.891044406037173,
-        "low": 6.7221125271842785,
-        "high": 7.016703868700946,
-        "volume_cumulative": 145932.1820987033
+        "price": 7.313189213650489,
+        "low": 7.18399405554511,
+        "high": 7.408918910166244,
+        "volume_cumulative": 160822.12602140292
       },
       {
         "time": "11:55",
-        "price": 6.8944991304891206,
-        "low": 6.7068285196629525,
-        "high": 7.037469895025371,
-        "volume_cumulative": 147724.4144204251
+        "price": 7.320991601822121,
+        "low": 7.1780283317067894,
+        "high": 7.4144345039172785,
+        "volume_cumulative": 163073.79895971864
       },
       {
         "time": "12:00",
-        "price": 6.893757653109373,
-        "low": 6.703711994456992,
-        "high": 7.045345924155599,
-        "volume_cumulative": 149574.27291942865
+        "price": 7.313424313977143,
+        "low": 7.1800169063195645,
+        "high": 7.416243909775369,
+        "volume_cumulative": 165196.98842081235
       },
       {
         "time": "12:05",
-        "price": 6.8939606662747,
-        "low": 6.699374800743928,
-        "high": 7.039468955088835,
-        "volume_cumulative": 151705.859396254
+        "price": 7.309875770381313,
+        "low": 7.188960535302094,
+        "high": 7.416243909775369,
+        "volume_cumulative": 167367.7167684782
       },
       {
         "time": "12:10",
-        "price": 6.897516897309312,
-        "low": 6.686688054081989,
-        "high": 7.032672732313828,
-        "volume_cumulative": 153847.34127725905
+        "price": 7.298759938940505,
+        "low": 7.200392360938067,
+        "high": 7.423568909384493,
+        "volume_cumulative": 169566.71148113286
       },
       {
         "time": "12:15",
-        "price": 6.89346168476379,
-        "low": 6.683481943626119,
-        "high": 7.037744986579385,
-        "volume_cumulative": 156380.56474726013
+        "price": 7.294975947607364,
+        "low": 7.204369510163614,
+        "high": 7.4304927854069796,
+        "volume_cumulative": 172099.76323456477
       },
       {
         "time": "12:20",
-        "price": 6.890607448405418,
-        "low": 6.66733628518828,
-        "high": 7.042817240844941,
-        "volume_cumulative": 158409.12260409692
+        "price": 7.302190489070295,
+        "low": 7.192937684527641,
+        "high": 7.436137175514357,
+        "volume_cumulative": 176186.18022761078
       },
       {
         "time": "12:25",
-        "price": 6.897719910474639,
-        "low": 6.673679658519249,
-        "high": 7.047889495110499,
-        "volume_cumulative": 160024.4018157819
+        "price": 7.302307943341562,
+        "low": 7.177528709666123,
+        "high": 7.43276927362134,
+        "volume_cumulative": 178067.178334141
       },
       {
         "time": "12:30",
-        "price": 6.90051393173844,
-        "low": 6.675634157468744,
-        "high": 7.041093272335491,
-        "volume_cumulative": 162350.98596320703
+        "price": 7.295798828275524,
+        "low": 7.182994811463774,
+        "high": 7.434829589302597,
+        "volume_cumulative": 181044.78291876108
       },
       {
         "time": "12:35",
-        "price": 6.918174656722352,
-        "low": 6.68405199886983,
-        "high": 7.03936930382604,
-        "volume_cumulative": 164125.17372436586
+        "price": 7.292132830408426,
+        "low": 7.169574411215029,
+        "high": 7.436889904983851,
+        "volume_cumulative": 184599.27831610796
       },
       {
         "time": "12:40",
-        "price": 6.9283342631070886,
-        "low": 6.686126466939945,
-        "high": 7.044441558091598,
-        "volume_cumulative": 166514.04070986318
+        "price": 7.29544649567133,
+        "low": 7.165183945238707,
+        "high": 7.4288197080597085,
+        "volume_cumulative": 187254.38937290077
       },
       {
         "time": "12:45",
-        "price": 6.950674096596788,
-        "low": 6.690395372200799,
-        "high": 7.051237780866603,
-        "volume_cumulative": 169285.91804537445
+        "price": 7.294975947607364,
+        "low": 7.166966872054019,
+        "high": 7.421787153022324,
+        "volume_cumulative": 190037.9839069156
       },
       {
         "time": "12:50",
-        "price": 6.947404305927281,
-        "low": 6.696738745531768,
-        "high": 7.046165526601049,
-        "volume_cumulative": 171756.27659470454
+        "price": 7.291662851748841,
+        "low": 7.172432973851671,
+        "high": 7.423568909384493,
+        "volume_cumulative": 192566.53873864474
       },
       {
         "time": "12:55",
-        "price": 6.966796570659257,
-        "low": 6.705276556053475,
-        "high": 7.047789843847704,
-        "volume_cumulative": 174843.64269876835
+        "price": 7.284330664230522,
+        "low": 7.163467073942521,
+        "high": 7.423568909384493,
+        "volume_cumulative": 195969.42363286967
       },
       {
         "time": "13:00",
-        "price": 6.97746526376309,
-        "low": 6.6968587146523895,
-        "high": 7.042717589582147,
-        "volume_cumulative": 176913.52842012033
+        "price": 7.28811430815301,
+        "low": 7.156034668458714,
+        "high": 7.423568909384493,
+        "volume_cumulative": 198965.01590430082
       },
       {
         "time": "13:05",
-        "price": 6.9634797029706395,
-        "low": 6.6692907841377735,
-        "high": 7.036319905333859,
-        "volume_cumulative": 181787.3060199179
+        "price": 7.2806643189527716,
+        "low": 7.161730703321522,
+        "high": 7.433318287284985,
+        "volume_cumulative": 203652.73557074583
       },
       {
         "time": "13:10",
-        "price": 6.967113243390833,
-        "low": 6.669410753258396,
-        "high": 7.048354467812412,
-        "volume_cumulative": 184242.53042167902
+        "price": 7.280664252585571,
+        "low": 7.161777259515833,
+        "high": 7.427890069710713,
+        "volume_cumulative": 208614.12504367373
       },
       {
         "time": "13:15",
-        "price": 6.967018009385426,
-        "low": 6.648986828596891,
-        "high": 7.03764533531659,
-        "volume_cumulative": 188839.818787044
+        "price": 7.287878860415701,
+        "low": 7.165371629576818,
+        "high": 7.422461852136442,
+        "volume_cumulative": 212405.03003910912
       },
       {
         "time": "13:20",
-        "price": 6.9598461625504475,
-        "low": 6.663497899599901,
-        "high": 7.057946554336846,
-        "volume_cumulative": 193155.961257186
+        "price": 7.298759399745729,
+        "low": 7.158211405885209,
+        "high": 7.415195103311823,
+        "volume_cumulative": 216323.7760943804
       },
       {
         "time": "13:25",
-        "price": 6.952674315715467,
-        "low": 6.671725159569754,
-        "high": 7.038996432250464,
-        "volume_cumulative": 197934.27731077946
+        "price": 7.302542851884096,
+        "low": 7.14582403056665,
+        "high": 7.417033634562167,
+        "volume_cumulative": 222244.2947247706
       },
       {
         "time": "13:30",
-        "price": 6.952674315715467,
-        "low": 6.6674562543089015,
-        "high": 7.046375974453008,
-        "volume_cumulative": 202407.0000000001
+        "price": 7.302542851884096,
+        "low": 7.14582403056665,
+        "high": 7.422461852136442,
+        "volume_cumulative": 227996.49999999994
       }
     ]
   },
   "comparison": {
-    "target_date": "2026-11-23",
+    "target_date": "2026-11-24",
     "points": [
       {
+        "time": "09:00",
+        "predicted": 7.29273583692717,
+        "actual": null
+      },
+      {
         "time": "09:05",
-        "predicted": 6.9810497491003884,
-        "actual": 7.03
-      },
-      {
-        "time": "09:08",
-        "predicted": null,
-        "actual": 6.97
-      },
-      {
-        "time": "09:09",
-        "predicted": null,
-        "actual": 6.91
+        "predicted": 7.302095416254599,
+        "actual": 8.04
       },
       {
         "time": "09:10",
-        "predicted": 6.951859142157446,
-        "actual": 6.94
-      },
-      {
-        "time": "09:11",
-        "predicted": null,
-        "actual": 6.86
-      },
-      {
-        "time": "09:12",
-        "predicted": null,
-        "actual": 6.92
-      },
-      {
-        "time": "09:13",
-        "predicted": null,
-        "actual": 6.9
-      },
-      {
-        "time": "09:14",
-        "predicted": null,
-        "actual": 6.9
+        "predicted": 7.281691252947548,
+        "actual": 8.04
       },
       {
         "time": "09:15",
-        "predicted": 6.9658590822183175,
-        "actual": 6.89
-      },
-      {
-        "time": "09:16",
-        "predicted": null,
-        "actual": 6.92
-      },
-      {
-        "time": "09:17",
-        "predicted": null,
-        "actual": 6.92
-      },
-      {
-        "time": "09:18",
-        "predicted": null,
-        "actual": 6.87
-      },
-      {
-        "time": "09:19",
-        "predicted": null,
-        "actual": 6.86
+        "predicted": 7.298837657549828,
+        "actual": 8.04
       },
       {
         "time": "09:20",
-        "predicted": 6.975390607455386,
-        "actual": 6.86
-      },
-      {
-        "time": "09:21",
-        "predicted": null,
-        "actual": 6.88
-      },
-      {
-        "time": "09:22",
-        "predicted": null,
-        "actual": 6.87
-      },
-      {
-        "time": "09:23",
-        "predicted": null,
-        "actual": 6.82
-      },
-      {
-        "time": "09:24",
-        "predicted": null,
-        "actual": 6.85
+        "predicted": 7.305856486937394,
+        "actual": 8.04
       },
       {
         "time": "09:25",
-        "predicted": 6.957220959969367,
-        "actual": 6.84
-      },
-      {
-        "time": "09:26",
-        "predicted": null,
-        "actual": 6.85
-      },
-      {
-        "time": "09:27",
-        "predicted": null,
-        "actual": 6.89
-      },
-      {
-        "time": "09:28",
-        "predicted": null,
-        "actual": 6.89
-      },
-      {
-        "time": "09:29",
-        "predicted": null,
-        "actual": 6.9
+        "predicted": 7.288649149793421,
+        "actual": 8.04
       },
       {
         "time": "09:30",
-        "predicted": 6.956057576772616,
-        "actual": 6.91
-      },
-      {
-        "time": "09:31",
-        "predicted": null,
-        "actual": 6.96
-      },
-      {
-        "time": "09:32",
-        "predicted": null,
-        "actual": 6.97
-      },
-      {
-        "time": "09:33",
-        "predicted": null,
-        "actual": 6.98
-      },
-      {
-        "time": "09:34",
-        "predicted": null,
-        "actual": 6.94
+        "predicted": 7.284781538476075,
+        "actual": 8.02
       },
       {
         "time": "09:35",
-        "predicted": 6.932815724431448,
-        "actual": 6.95
-      },
-      {
-        "time": "09:36",
-        "predicted": null,
-        "actual": 6.99
-      },
-      {
-        "time": "09:37",
-        "predicted": null,
-        "actual": 6.99
-      },
-      {
-        "time": "09:38",
-        "predicted": null,
-        "actual": 6.99
-      },
-      {
-        "time": "09:39",
-        "predicted": null,
-        "actual": 7.01
+        "predicted": 7.305974620598759,
+        "actual": 7.97
       },
       {
         "time": "09:40",
-        "predicted": 6.952424036352423,
-        "actual": 7.01
-      },
-      {
-        "time": "09:41",
-        "predicted": null,
-        "actual": 6.98
-      },
-      {
-        "time": "09:42",
-        "predicted": null,
-        "actual": 7.02
-      },
-      {
-        "time": "09:43",
-        "predicted": null,
-        "actual": 7.03
-      },
-      {
-        "time": "09:44",
-        "predicted": null,
-        "actual": 7.06
+        "predicted": 7.3053318040956885,
+        "actual": null
       },
       {
         "time": "09:45",
-        "predicted": 6.95726214411208,
-        "actual": 7.06
-      },
-      {
-        "time": "09:46",
-        "predicted": null,
-        "actual": 7.11
-      },
-      {
-        "time": "09:47",
-        "predicted": null,
-        "actual": 7.1
-      },
-      {
-        "time": "09:48",
-        "predicted": null,
-        "actual": 7.09
-      },
-      {
-        "time": "09:49",
-        "predicted": null,
-        "actual": 7.08
+        "predicted": 7.312902006601315,
+        "actual": null
       },
       {
         "time": "09:50",
-        "predicted": 6.941522684561461,
-        "actual": 7.08
-      },
-      {
-        "time": "09:51",
-        "predicted": null,
-        "actual": 7.09
-      },
-      {
-        "time": "09:52",
-        "predicted": null,
-        "actual": 7.09
-      },
-      {
-        "time": "09:53",
-        "predicted": null,
-        "actual": 7.07
-      },
-      {
-        "time": "09:54",
-        "predicted": null,
-        "actual": 7.06
+        "predicted": 7.305832374265818,
+        "actual": null
       },
       {
         "time": "09:55",
-        "predicted": 6.90812266905625,
-        "actual": 7.05
-      },
-      {
-        "time": "09:56",
-        "predicted": null,
-        "actual": 7.1
-      },
-      {
-        "time": "09:57",
-        "predicted": null,
-        "actual": 7.13
-      },
-      {
-        "time": "09:58",
-        "predicted": null,
-        "actual": 7.17
-      },
-      {
-        "time": "09:59",
-        "predicted": null,
-        "actual": 7.15
+        "predicted": 7.312312989131572,
+        "actual": null
       },
       {
         "time": "10:00",
-        "predicted": 6.897371740225932,
-        "actual": 7.14
-      },
-      {
-        "time": "10:01",
-        "predicted": null,
-        "actual": 7.15
-      },
-      {
-        "time": "10:02",
-        "predicted": null,
-        "actual": 7.16
-      },
-      {
-        "time": "10:03",
-        "predicted": null,
-        "actual": 7.16
-      },
-      {
-        "time": "10:04",
-        "predicted": null,
-        "actual": 7.14
+        "predicted": 7.29170983231902,
+        "actual": null
       },
       {
         "time": "10:05",
-        "predicted": 6.892931461810642,
-        "actual": 7.14
-      },
-      {
-        "time": "10:06",
-        "predicted": null,
-        "actual": 7.11
-      },
-      {
-        "time": "10:07",
-        "predicted": null,
-        "actual": 7.11
-      },
-      {
-        "time": "10:08",
-        "predicted": null,
-        "actual": 7.07
-      },
-      {
-        "time": "10:09",
-        "predicted": null,
-        "actual": 7.06
+        "predicted": 7.2915174171727175,
+        "actual": null
       },
       {
         "time": "10:10",
-        "predicted": 6.888316502431598,
-        "actual": 7.06
-      },
-      {
-        "time": "10:11",
-        "predicted": null,
-        "actual": 7.06
-      },
-      {
-        "time": "10:12",
-        "predicted": null,
-        "actual": 7.04
-      },
-      {
-        "time": "10:13",
-        "predicted": null,
-        "actual": 7.03
-      },
-      {
-        "time": "10:14",
-        "predicted": null,
-        "actual": 7.04
+        "predicted": 7.300930411381159,
+        "actual": null
       },
       {
         "time": "10:15",
-        "predicted": 6.884475204952629,
-        "actual": 7.04
-      },
-      {
-        "time": "10:16",
-        "predicted": null,
-        "actual": 7.07
-      },
-      {
-        "time": "10:17",
-        "predicted": null,
-        "actual": 7.08
-      },
-      {
-        "time": "10:18",
-        "predicted": null,
-        "actual": 7.06
-      },
-      {
-        "time": "10:19",
-        "predicted": null,
-        "actual": 7.05
+        "predicted": 7.292451136028592,
+        "actual": null
       },
       {
         "time": "10:20",
-        "predicted": 6.885987932127137,
-        "actual": 7.05
-      },
-      {
-        "time": "10:21",
-        "predicted": null,
-        "actual": 7.01
-      },
-      {
-        "time": "10:22",
-        "predicted": null,
-        "actual": 7.01
-      },
-      {
-        "time": "10:23",
-        "predicted": null,
-        "actual": 7.01
-      },
-      {
-        "time": "10:24",
-        "predicted": null,
-        "actual": 6.99
+        "predicted": 7.308778172963821,
+        "actual": null
       },
       {
         "time": "10:25",
-        "predicted": 6.884176248621372,
-        "actual": 6.99
-      },
-      {
-        "time": "10:26",
-        "predicted": null,
-        "actual": 7.0
-      },
-      {
-        "time": "10:27",
-        "predicted": null,
-        "actual": 7.0
-      },
-      {
-        "time": "10:28",
-        "predicted": null,
-        "actual": 7.01
-      },
-      {
-        "time": "10:29",
-        "predicted": null,
-        "actual": 7.05
+        "predicted": 7.320554251856594,
+        "actual": null
       },
       {
         "time": "10:30",
-        "predicted": 6.910108470259185,
-        "actual": 7.05
-      },
-      {
-        "time": "10:31",
-        "predicted": null,
-        "actual": 7.04
-      },
-      {
-        "time": "10:32",
-        "predicted": null,
-        "actual": 7.03
-      },
-      {
-        "time": "10:33",
-        "predicted": null,
-        "actual": 7.02
-      },
-      {
-        "time": "10:34",
-        "predicted": null,
-        "actual": 7.03
+        "predicted": 7.316004889739347,
+        "actual": null
       },
       {
         "time": "10:35",
-        "predicted": 6.899164060647442,
-        "actual": 7.03
-      },
-      {
-        "time": "10:36",
-        "predicted": null,
-        "actual": 7.02
-      },
-      {
-        "time": "10:37",
-        "predicted": null,
-        "actual": 7.01
-      },
-      {
-        "time": "10:38",
-        "predicted": null,
-        "actual": 7.0
-      },
-      {
-        "time": "10:39",
-        "predicted": null,
-        "actual": 7.02
+        "predicted": 7.316267209182356,
+        "actual": null
       },
       {
         "time": "10:40",
-        "predicted": 6.892172028767363,
-        "actual": 7.03
-      },
-      {
-        "time": "10:41",
-        "predicted": null,
-        "actual": 6.99
-      },
-      {
-        "time": "10:42",
-        "predicted": null,
-        "actual": 6.97
-      },
-      {
-        "time": "10:43",
-        "predicted": null,
-        "actual": 7.0
-      },
-      {
-        "time": "10:44",
-        "predicted": null,
-        "actual": 7.01
+        "predicted": 7.312456346143517,
+        "actual": null
       },
       {
         "time": "10:45",
-        "predicted": 6.862509525937947,
-        "actual": 7.01
-      },
-      {
-        "time": "10:46",
-        "predicted": null,
-        "actual": 7.02
-      },
-      {
-        "time": "10:47",
-        "predicted": null,
-        "actual": 6.99
-      },
-      {
-        "time": "10:48",
-        "predicted": null,
-        "actual": 6.99
-      },
-      {
-        "time": "10:49",
-        "predicted": null,
-        "actual": 7.0
+        "predicted": 7.319539705907097,
+        "actual": null
       },
       {
         "time": "10:50",
-        "predicted": 6.863241444469227,
-        "actual": 7.0
-      },
-      {
-        "time": "10:51",
-        "predicted": null,
-        "actual": 7.03
-      },
-      {
-        "time": "10:52",
-        "predicted": null,
-        "actual": 7.04
-      },
-      {
-        "time": "10:53",
-        "predicted": null,
-        "actual": 7.02
-      },
-      {
-        "time": "10:54",
-        "predicted": null,
-        "actual": 7.02
+        "predicted": 7.326623065670678,
+        "actual": null
       },
       {
         "time": "10:55",
-        "predicted": 6.857204948031859,
-        "actual": 7.02
-      },
-      {
-        "time": "10:56",
-        "predicted": null,
-        "actual": 7.03
-      },
-      {
-        "time": "10:57",
-        "predicted": null,
-        "actual": 7.04
-      },
-      {
-        "time": "10:58",
-        "predicted": null,
-        "actual": 7.06
-      },
-      {
-        "time": "10:59",
-        "predicted": null,
-        "actual": 7.07
+        "predicted": 7.319406514491825,
+        "actual": null
       },
       {
         "time": "11:00",
-        "predicted": 6.867992849882146,
-        "actual": 7.07
-      },
-      {
-        "time": "11:01",
-        "predicted": null,
-        "actual": 7.06
-      },
-      {
-        "time": "11:02",
-        "predicted": null,
-        "actual": 7.05
-      },
-      {
-        "time": "11:03",
-        "predicted": null,
-        "actual": 7.07
-      },
-      {
-        "time": "11:04",
-        "predicted": null,
-        "actual": 7.09
+        "predicted": 7.318964181434026,
+        "actual": null
       },
       {
         "time": "11:05",
-        "predicted": 6.86714539289325,
-        "actual": 7.09
-      },
-      {
-        "time": "11:06",
-        "predicted": null,
-        "actual": 7.1
-      },
-      {
-        "time": "11:07",
-        "predicted": null,
-        "actual": 7.12
-      },
-      {
-        "time": "11:08",
-        "predicted": null,
-        "actual": 7.12
-      },
-      {
-        "time": "11:09",
-        "predicted": null,
-        "actual": 7.11
+        "predicted": 7.3088803476915185,
+        "actual": null
       },
       {
         "time": "11:10",
-        "predicted": 6.869067049032423,
-        "actual": 7.11
-      },
-      {
-        "time": "11:11",
-        "predicted": null,
-        "actual": 7.11
-      },
-      {
-        "time": "11:12",
-        "predicted": null,
-        "actual": 7.12
-      },
-      {
-        "time": "11:13",
-        "predicted": null,
-        "actual": 7.12
-      },
-      {
-        "time": "11:14",
-        "predicted": null,
-        "actual": 7.14
+        "predicted": 7.3088803476915185,
+        "actual": null
       },
       {
         "time": "11:15",
-        "predicted": 6.862056093545865,
-        "actual": 7.14
-      },
-      {
-        "time": "11:16",
-        "predicted": null,
-        "actual": 7.15
-      },
-      {
-        "time": "11:17",
-        "predicted": null,
-        "actual": 7.15
-      },
-      {
-        "time": "11:18",
-        "predicted": null,
-        "actual": 7.18
-      },
-      {
-        "time": "11:19",
-        "predicted": null,
-        "actual": 7.18
+        "predicted": 7.310649900747548,
+        "actual": null
       },
       {
         "time": "11:20",
-        "predicted": 6.869067049032423,
-        "actual": 7.18
-      },
-      {
-        "time": "11:21",
-        "predicted": null,
-        "actual": 7.22
-      },
-      {
-        "time": "11:22",
-        "predicted": null,
-        "actual": 7.24
-      },
-      {
-        "time": "11:23",
-        "predicted": null,
-        "actual": 7.24
-      },
-      {
-        "time": "11:24",
-        "predicted": null,
-        "actual": 7.26
+        "predicted": 7.308369067075382,
+        "actual": null
       },
       {
         "time": "11:25",
-        "predicted": 6.873646909313161,
-        "actual": 7.27
-      },
-      {
-        "time": "11:26",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "11:27",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "11:28",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "11:29",
-        "predicted": null,
-        "actual": 7.31
+        "predicted": 7.272387308635389,
+        "actual": null
       },
       {
         "time": "11:30",
-        "predicted": 6.873646909313161,
-        "actual": 7.31
-      },
-      {
-        "time": "11:31",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "11:32",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "11:33",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "11:34",
-        "predicted": null,
-        "actual": 7.34
+        "predicted": 7.281582277337478,
+        "actual": null
       },
       {
         "time": "11:35",
-        "predicted": 6.886848204205479,
-        "actual": 7.34
-      },
-      {
-        "time": "11:36",
-        "predicted": null,
-        "actual": 7.34
-      },
-      {
-        "time": "11:37",
-        "predicted": null,
-        "actual": 7.34
-      },
-      {
-        "time": "11:38",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "11:39",
-        "predicted": null,
-        "actual": 7.32
+        "predicted": 7.309416122869318,
+        "actual": null
       },
       {
         "time": "11:40",
-        "predicted": 6.8944991304891206,
-        "actual": 7.32
-      },
-      {
-        "time": "11:41",
-        "predicted": null,
-        "actual": 7.28
-      },
-      {
-        "time": "11:42",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "11:43",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "11:44",
-        "predicted": null,
-        "actual": 7.31
+        "predicted": 7.31673775724632,
+        "actual": null
       },
       {
         "time": "11:45",
-        "predicted": 6.8944991304891206,
-        "actual": 7.31
-      },
-      {
-        "time": "11:46",
-        "predicted": null,
-        "actual": 7.27
-      },
-      {
-        "time": "11:47",
-        "predicted": null,
-        "actual": 7.27
-      },
-      {
-        "time": "11:48",
-        "predicted": null,
-        "actual": 7.28
-      },
-      {
-        "time": "11:49",
-        "predicted": null,
-        "actual": 7.27
+        "predicted": 7.293182148530519,
+        "actual": null
       },
       {
         "time": "11:50",
-        "predicted": 6.891044406037173,
-        "actual": 7.27
-      },
-      {
-        "time": "11:51",
-        "predicted": null,
-        "actual": 7.26
-      },
-      {
-        "time": "11:52",
-        "predicted": null,
-        "actual": 7.26
-      },
-      {
-        "time": "11:53",
-        "predicted": null,
-        "actual": 7.25
-      },
-      {
-        "time": "11:54",
-        "predicted": null,
-        "actual": 7.25
+        "predicted": 7.313189213650489,
+        "actual": null
       },
       {
         "time": "11:55",
-        "predicted": 6.8944991304891206,
-        "actual": 7.25
-      },
-      {
-        "time": "11:56",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "11:57",
-        "predicted": null,
-        "actual": 7.28
-      },
-      {
-        "time": "11:58",
-        "predicted": null,
-        "actual": 7.28
-      },
-      {
-        "time": "11:59",
-        "predicted": null,
-        "actual": 7.28
+        "predicted": 7.320991601822121,
+        "actual": null
       },
       {
         "time": "12:00",
-        "predicted": 6.893757653109373,
-        "actual": 7.28
-      },
-      {
-        "time": "12:01",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:02",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:03",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:04",
-        "predicted": null,
-        "actual": 7.32
+        "predicted": 7.313424313977143,
+        "actual": null
       },
       {
         "time": "12:05",
-        "predicted": 6.8939606662747,
-        "actual": 7.32
-      },
-      {
-        "time": "12:06",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:07",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:08",
-        "predicted": null,
-        "actual": 7.34
-      },
-      {
-        "time": "12:09",
-        "predicted": null,
-        "actual": 7.33
+        "predicted": 7.309875770381313,
+        "actual": null
       },
       {
         "time": "12:10",
-        "predicted": 6.897516897309312,
-        "actual": 7.33
-      },
-      {
-        "time": "12:11",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:12",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:13",
-        "predicted": null,
-        "actual": 7.34
-      },
-      {
-        "time": "12:14",
-        "predicted": null,
-        "actual": 7.33
+        "predicted": 7.298759938940505,
+        "actual": null
       },
       {
         "time": "12:15",
-        "predicted": 6.89346168476379,
-        "actual": 7.33
-      },
-      {
-        "time": "12:16",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:17",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:18",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "12:19",
-        "predicted": null,
-        "actual": 7.33
+        "predicted": 7.294975947607364,
+        "actual": null
       },
       {
         "time": "12:20",
-        "predicted": 6.890607448405418,
-        "actual": 7.34
-      },
-      {
-        "time": "12:21",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "12:22",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "12:23",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "12:24",
-        "predicted": null,
-        "actual": 7.32
+        "predicted": 7.302190489070295,
+        "actual": null
       },
       {
         "time": "12:25",
-        "predicted": 6.897719910474639,
-        "actual": 7.32
-      },
-      {
-        "time": "12:26",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:27",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:28",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "12:29",
-        "predicted": null,
-        "actual": 7.32
+        "predicted": 7.302307943341562,
+        "actual": null
       },
       {
         "time": "12:30",
-        "predicted": 6.90051393173844,
-        "actual": 7.32
-      },
-      {
-        "time": "12:31",
-        "predicted": null,
-        "actual": 7.27
-      },
-      {
-        "time": "12:32",
-        "predicted": null,
-        "actual": 7.27
-      },
-      {
-        "time": "12:33",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "12:34",
-        "predicted": null,
-        "actual": 7.28
+        "predicted": 7.295798828275524,
+        "actual": null
       },
       {
         "time": "12:35",
-        "predicted": 6.918174656722352,
-        "actual": 7.28
-      },
-      {
-        "time": "12:36",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "12:37",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "12:38",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "12:39",
-        "predicted": null,
-        "actual": 7.29
+        "predicted": 7.292132830408426,
+        "actual": null
       },
       {
         "time": "12:40",
-        "predicted": 6.9283342631070886,
-        "actual": 7.29
-      },
-      {
-        "time": "12:41",
-        "predicted": null,
-        "actual": 7.27
-      },
-      {
-        "time": "12:42",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "12:43",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:44",
-        "predicted": null,
-        "actual": 7.3
+        "predicted": 7.29544649567133,
+        "actual": null
       },
       {
         "time": "12:45",
-        "predicted": 6.950674096596788,
-        "actual": 7.3
-      },
-      {
-        "time": "12:46",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:47",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:48",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "12:49",
-        "predicted": null,
-        "actual": 7.31
+        "predicted": 7.294975947607364,
+        "actual": null
       },
       {
         "time": "12:50",
-        "predicted": 6.947404305927281,
-        "actual": 7.31
-      },
-      {
-        "time": "12:51",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "12:52",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "12:53",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "12:54",
-        "predicted": null,
-        "actual": 7.3
+        "predicted": 7.291662851748841,
+        "actual": null
       },
       {
         "time": "12:55",
-        "predicted": 6.966796570659257,
-        "actual": 7.3
-      },
-      {
-        "time": "12:56",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "12:57",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "12:58",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "12:59",
-        "predicted": null,
-        "actual": 7.31
+        "predicted": 7.284330664230522,
+        "actual": null
       },
       {
         "time": "13:00",
-        "predicted": 6.97746526376309,
-        "actual": 7.32
-      },
-      {
-        "time": "13:01",
-        "predicted": null,
-        "actual": 7.33
-      },
-      {
-        "time": "13:02",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "13:03",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "13:04",
-        "predicted": null,
-        "actual": 7.32
+        "predicted": 7.28811430815301,
+        "actual": null
       },
       {
         "time": "13:05",
-        "predicted": 6.9634797029706395,
-        "actual": 7.32
-      },
-      {
-        "time": "13:06",
-        "predicted": null,
-        "actual": 7.32
-      },
-      {
-        "time": "13:07",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "13:08",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "13:09",
-        "predicted": null,
-        "actual": 7.31
+        "predicted": 7.2806643189527716,
+        "actual": null
       },
       {
         "time": "13:10",
-        "predicted": 6.967113243390833,
-        "actual": 7.31
-      },
-      {
-        "time": "13:11",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "13:12",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "13:13",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "13:14",
-        "predicted": null,
-        "actual": 7.3
+        "predicted": 7.280664252585571,
+        "actual": null
       },
       {
         "time": "13:15",
-        "predicted": 6.967018009385426,
-        "actual": 7.3
-      },
-      {
-        "time": "13:16",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "13:17",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "13:18",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "13:19",
-        "predicted": null,
-        "actual": 7.3
+        "predicted": 7.287878860415701,
+        "actual": null
       },
       {
         "time": "13:20",
-        "predicted": 6.9598461625504475,
-        "actual": 7.31
-      },
-      {
-        "time": "13:21",
-        "predicted": null,
-        "actual": 7.29
-      },
-      {
-        "time": "13:22",
-        "predicted": null,
-        "actual": 7.3
-      },
-      {
-        "time": "13:23",
-        "predicted": null,
-        "actual": 7.31
-      },
-      {
-        "time": "13:24",
-        "predicted": null,
-        "actual": 7.31
+        "predicted": 7.298759399745729,
+        "actual": null
       },
       {
         "time": "13:25",
-        "predicted": 6.952674315715467,
-        "actual": 7.31
+        "predicted": 7.302542851884096,
+        "actual": null
       },
       {
         "time": "13:30",
-        "predicted": 6.952674315715467,
-        "actual": 7.31
+        "predicted": 7.302542851884096,
+        "actual": null
       }
     ]
   },
   "today_actual_points": [
     {
       "time": "09:05",
-      "actual": 7.03,
-      "date": "2026-11-23"
+      "actual": 8.04,
+      "date": "2026-11-24"
     },
     {
       "time": "09:10",
-      "actual": 6.94,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:08",
-      "actual": 6.97,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:09",
-      "actual": 6.91,
-      "date": "2026-11-23"
+      "actual": 8.04,
+      "date": "2026-11-24"
     },
     {
       "time": "09:15",
-      "actual": 6.89,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:11",
-      "actual": 6.86,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:12",
-      "actual": 6.92,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:13",
-      "actual": 6.9,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:14",
-      "actual": 6.9,
-      "date": "2026-11-23"
+      "actual": 8.04,
+      "date": "2026-11-24"
     },
     {
       "time": "09:20",
-      "actual": 6.86,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:16",
-      "actual": 6.92,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:17",
-      "actual": 6.92,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:18",
-      "actual": 6.87,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:19",
-      "actual": 6.86,
-      "date": "2026-11-23"
+      "actual": 8.04,
+      "date": "2026-11-24"
     },
     {
       "time": "09:25",
-      "actual": 6.84,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:21",
-      "actual": 6.88,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:22",
-      "actual": 6.87,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:23",
-      "actual": 6.82,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:24",
-      "actual": 6.85,
-      "date": "2026-11-23"
+      "actual": 8.04,
+      "date": "2026-11-24"
     },
     {
       "time": "09:30",
-      "actual": 6.91,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:26",
-      "actual": 6.85,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:27",
-      "actual": 6.89,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:28",
-      "actual": 6.89,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:29",
-      "actual": 6.9,
-      "date": "2026-11-23"
+      "actual": 8.02,
+      "date": "2026-11-24"
     },
     {
       "time": "09:35",
-      "actual": 6.95,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:31",
-      "actual": 6.96,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:32",
-      "actual": 6.97,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:33",
-      "actual": 6.98,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:34",
-      "actual": 6.94,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:40",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:36",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:37",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:38",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:39",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:45",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:41",
-      "actual": 6.98,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:42",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:43",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:44",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:50",
-      "actual": 7.08,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:46",
-      "actual": 7.11,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:47",
-      "actual": 7.1,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:48",
-      "actual": 7.09,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:49",
-      "actual": 7.08,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:55",
-      "actual": 7.05,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:51",
-      "actual": 7.09,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:52",
-      "actual": 7.09,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:53",
-      "actual": 7.07,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:54",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:00",
-      "actual": 7.14,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:56",
-      "actual": 7.1,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:57",
-      "actual": 7.13,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:58",
-      "actual": 7.17,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "09:59",
-      "actual": 7.15,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:05",
-      "actual": 7.14,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:01",
-      "actual": 7.15,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:02",
-      "actual": 7.16,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:03",
-      "actual": 7.16,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:04",
-      "actual": 7.14,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:06",
-      "actual": 7.11,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:07",
-      "actual": 7.11,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:08",
-      "actual": 7.07,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:09",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:10",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:15",
-      "actual": 7.04,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:11",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:12",
-      "actual": 7.04,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:13",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:14",
-      "actual": 7.04,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:20",
-      "actual": 7.05,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:16",
-      "actual": 7.07,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:17",
-      "actual": 7.08,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:18",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:19",
-      "actual": 7.05,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:25",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:21",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:22",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:23",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:24",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:30",
-      "actual": 7.05,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:26",
-      "actual": 7.0,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:27",
-      "actual": 7.0,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:28",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:29",
-      "actual": 7.05,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:31",
-      "actual": 7.04,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:32",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:33",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:34",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:35",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:40",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:36",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:37",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:38",
-      "actual": 7.0,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:39",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:45",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:41",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:42",
-      "actual": 6.97,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:43",
-      "actual": 7.0,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:44",
-      "actual": 7.01,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:50",
-      "actual": 7.0,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:46",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:47",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:48",
-      "actual": 6.99,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:49",
-      "actual": 7.0,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:55",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:51",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:52",
-      "actual": 7.04,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:53",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:54",
-      "actual": 7.02,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:00",
-      "actual": 7.07,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:56",
-      "actual": 7.03,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:57",
-      "actual": 7.04,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:58",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "10:59",
-      "actual": 7.07,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:05",
-      "actual": 7.09,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:01",
-      "actual": 7.06,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:02",
-      "actual": 7.05,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:03",
-      "actual": 7.07,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:04",
-      "actual": 7.09,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:10",
-      "actual": 7.11,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:06",
-      "actual": 7.1,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:07",
-      "actual": 7.12,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:08",
-      "actual": 7.12,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:09",
-      "actual": 7.11,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:15",
-      "actual": 7.14,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:11",
-      "actual": 7.11,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:12",
-      "actual": 7.12,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:13",
-      "actual": 7.12,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:14",
-      "actual": 7.14,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:16",
-      "actual": 7.15,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:17",
-      "actual": 7.15,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:18",
-      "actual": 7.18,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:19",
-      "actual": 7.18,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:20",
-      "actual": 7.18,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:25",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:21",
-      "actual": 7.22,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:22",
-      "actual": 7.24,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:23",
-      "actual": 7.24,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:24",
-      "actual": 7.26,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:30",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:26",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:27",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:28",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:29",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:35",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:31",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:32",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:33",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:34",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:40",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:36",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:37",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:38",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:39",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:45",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:41",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:42",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:43",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:44",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:50",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:46",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:47",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:48",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:49",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:55",
-      "actual": 7.25,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:51",
-      "actual": 7.26,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:52",
-      "actual": 7.26,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:53",
-      "actual": 7.25,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:54",
-      "actual": 7.25,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:00",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:56",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:57",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:58",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "11:59",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:05",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:01",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:02",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:03",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:04",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:10",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:06",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:07",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:08",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:09",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:15",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:11",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:12",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:13",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:14",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:16",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:17",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:18",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:19",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:20",
-      "actual": 7.34,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:25",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:21",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:22",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:23",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:24",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:26",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:27",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:28",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:29",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:30",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:35",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:31",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:32",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:33",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:34",
-      "actual": 7.28,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:36",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:37",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:38",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:39",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:40",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:45",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:41",
-      "actual": 7.27,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:42",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:43",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:44",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:46",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:47",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:48",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:49",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:50",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:51",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:52",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:53",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:54",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:55",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:00",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:56",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:57",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:58",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "12:59",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:05",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:01",
-      "actual": 7.33,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:02",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:03",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:04",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:10",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:06",
-      "actual": 7.32,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:07",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:08",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:09",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:15",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:11",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:12",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:13",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:14",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:20",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:16",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:17",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:18",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:19",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:25",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:21",
-      "actual": 7.29,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:22",
-      "actual": 7.3,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:23",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:24",
-      "actual": 7.31,
-      "date": "2026-11-23"
-    },
-    {
-      "time": "13:30",
-      "actual": 7.31,
-      "date": "2026-11-23"
+      "actual": 7.97,
+      "date": "2026-11-24"
     }
   ],
   "technical_analysis": {
     "source": "元大 SPARK 歷史 5 分 K（日 K 由 5 分 K 合併）",
     "timeframe": "日 K",
-    "data_date": "2026-11-23",
-    "is_intraday": false,
-    "session_count": 74,
-    "latest_bar_count": 54,
+    "data_date": "2026-11-24",
+    "is_intraday": true,
+    "session_count": 75,
+    "latest_bar_count": 8,
     "sufficient_for_macd": true,
-    "ma5": 7.58,
-    "ma20": 8.724,
-    "macd": -0.7136903438221047,
-    "macd_signal": -0.5764543791950985,
-    "macd_histogram": -0.13723596462700627,
-    "rsi14": 31.6894057475276,
+    "ma5": 7.5840000000000005,
+    "ma20": 8.6295,
+    "macd": -0.6746215372236719,
+    "macd_signal": -0.5960878108008132,
+    "macd_histogram": -0.07853372642285872,
+    "rsi14": 40.768589241658425,
     "candles": [
-      {
-        "date": "2026-08-25",
-        "open": 9.77,
-        "high": 9.94,
-        "low": 9.65,
-        "close": 9.94,
-        "volume": 199012.0,
-        "ma5": 9.946,
-        "ma20": null,
-        "macd": null,
-        "macd_signal": null,
-        "macd_histogram": null,
-        "rsi14": 65.67199475668244,
-        "bars": 54
-      },
       {
         "date": "2026-08-26",
         "open": 9.92,
@@ -4398,7 +2118,7 @@
         "high": 10.54,
         "low": 10.24,
         "close": 10.32,
-        "volume": 95656.0,
+        "volume": 96073.0,
         "ma5": 10.326,
         "ma20": 10.8355,
         "macd": -0.003122792336514024,
@@ -4721,6 +2441,21 @@
         "macd_histogram": -0.13723596462700627,
         "rsi14": 31.6894057475276,
         "bars": 54
+      },
+      {
+        "date": "2026-11-24",
+        "open": 8.04,
+        "high": 8.04,
+        "low": 7.94,
+        "close": 7.97,
+        "volume": 388632.0,
+        "ma5": 7.5840000000000005,
+        "ma20": 8.6295,
+        "macd": -0.6746215372236719,
+        "macd_signal": -0.5960878108008132,
+        "macd_histogram": -0.07853372642285872,
+        "rsi14": 40.768589241658425,
+        "bars": 8
       }
     ]
   }
