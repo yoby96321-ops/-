@@ -1,17 +1,17 @@
 {
   "symbol": "00403A",
-  "updated_at": "2026-11-24 13:28:24 CST",
-  "updated_at_epoch": 1795498104,
+  "updated_at": "2026-11-24 13:30:09 CST",
+  "updated_at_epoch": 1795498209,
   "latest_quote": {
     "price": 8.04,
-    "time": "2026-11-24 13:25:00",
+    "time": "2026-11-24 13:30:00",
     "source": "元大 5 分 K（即時訂閱暫未收到）",
     "bid": null,
     "ask": null
   },
   "today_change_pct": 9.986320970378614,
   "today_estimated_volume": null,
-  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 6 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 4049 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
+  "model_note": "歷史相似日模型；有效樣本 20 天。預測偏差校正已啟用：已比對 6 個完整交易日，目前修正 -0.037 元（至少 3 天後開始調整）。資料庫目前保存日線 143 筆、5 分 K 4050 筆。每日資料來源 Yahoo Finance，盤中報價來自元大 SPARK API。",
   "model_calibration": {
     "validated_days": 6,
     "required_days": 3,
@@ -22,13 +22,13 @@
   "model_validation": {
     "method": "依日期往前回測，不使用預測日資料；與前收不變基準比較",
     "sessions": 20,
-    "points": 1079,
-    "mae": 0.3381099634836041,
-    "baseline_mae": 0.3280353028736697,
-    "mae_improvement_pct": -3.071212312113329,
+    "points": 1080,
+    "mae": 0.33844588680297305,
+    "baseline_mae": 0.3284074924610279,
+    "mae_improvement_pct": -3.0566885873154677,
     "direction_accuracy_pct": 40.0,
     "median_close_error": 0.17684251628380565,
-    "coverage_iqr_pct": 15.66265060240964,
+    "coverage_iqr_pct": 15.648148148148147,
     "from_date": "2026-10-28",
     "to_date": "2026-11-24"
   },
@@ -1038,15 +1038,15 @@
     "training_days": 73,
     "generated_at": "13:02",
     "backtest": {
-      "days": 53,
-      "actual_tail_days": 19,
-      "hits": 10,
+      "days": 54,
+      "actual_tail_days": 20,
+      "hits": 11,
       "misses": 9,
       "false_alerts": 1,
-      "baseline_hits": 9,
+      "baseline_hits": 10,
       "threshold_pct": 3.0,
-      "mae_pct": 1.5044966249845564,
-      "baseline_pct": 1.4782928707755647
+      "mae_pct": 1.4791158005865046,
+      "baseline_pct": 1.4509170768723134
     }
   },
   "comparison_forecast": {
@@ -1924,7 +1924,7 @@
       {
         "time": "13:30",
         "predicted": 7.302542851884096,
-        "actual": null
+        "actual": 8.04
       }
     ]
   },
@@ -2398,6 +2398,11 @@
       "time": "13:24",
       "actual": 8.04,
       "date": "2026-11-24"
+    },
+    {
+      "time": "13:30",
+      "actual": 8.04,
+      "date": "2026-11-24"
     }
   ],
   "technical_analysis": {
@@ -2406,7 +2411,7 @@
     "data_date": "2026-11-24",
     "is_intraday": true,
     "session_count": 75,
-    "latest_bar_count": 53,
+    "latest_bar_count": 54,
     "sufficient_for_macd": true,
     "ma5": 7.598000000000001,
     "ma20": 8.633,
@@ -3306,14 +3311,14 @@
         "high": 8.04,
         "low": 7.92,
         "close": 8.04,
-        "volume": 1236674.0,
+        "volume": 1236895.0,
         "ma5": 7.598000000000001,
         "ma20": 8.633,
         "macd": -0.6690374916396262,
         "macd_signal": -0.5949710016840041,
         "macd_histogram": -0.07406648995562215,
         "rsi14": 41.59194135773083,
-        "bars": 53
+        "bars": 54
       }
     ]
   }
