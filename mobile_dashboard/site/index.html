@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1220">
   <title>00403A 行情與預測</title>
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script id="plotly-library" defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <style>
     :root{color-scheme:dark;--bg:#0b1220;--card:#111c2e;--muted:#9aabc3;--line:#24344e;--blue:#58a6ff;--orange:#ff9d4d;--green:#38c793}
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf4ff;font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -30,29 +30,60 @@
       main{padding-inline:10px}.card{padding:12px}.chart{height:300px}
       #compare-chart{height:270px}.chart-small{height:240px}
     }
+    [hidden]{display:none!important}
+    :root{--bg:#0b121a;--card:#121d28;--line:#28394a;--muted:#a5b5c6;--accent:#6dddcc}
+    main{max-width:1080px}
+    .top{align-items:center;margin:4px 0 16px}
+    .instrument{display:flex;align-items:center;gap:11px;min-width:0}
+    .instrument-code{font:700 14px/1.2 system-ui,sans-serif;color:var(--accent);padding:9px 10px;border:1px solid #315e60;border-radius:8px;background:#162b31}
+    h1{font-size:clamp(18px,3vw,25px)}
+    .status{white-space:nowrap}
+    .status[data-state="delayed"]{color:#ffd27b}
+    .overview{gap:8px;margin-bottom:12px}
+    .overview .metric{margin:0;min-width:0;padding:12px}
+    .metric .value{font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+    #change[data-direction="up"]{color:#ff998f}#change[data-direction="down"]{color:#78dbc5}
+    .dashboard-nav{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 12px}
+    .dashboard-nav-inner{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;border:1px solid var(--line);border-radius:10px;padding:4px;background:#0e1923}
+    .dashboard-nav button{border:1px solid transparent;border-radius:7px;min-height:44px;background:transparent;color:#b4c3d4;font:inherit;font-size:14px;cursor:pointer}
+    .dashboard-nav button[aria-pressed="true"]{border-color:#356762;background:#193433;color:#adf4e6;font-weight:700}
+    button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .signal-list{list-style:none;padding:0;margin-bottom:12px}
+    .signal-list li{margin:0;border-bottom:1px solid var(--line);padding:8px 0}
+    .signal-list li:last-child{border-bottom:0}
+    .opening-result{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+    .subtle-details summary{cursor:pointer;color:#c5d4e4;font-size:14px}
+    @media(max-width:430px){.instrument{gap:7px}.instrument-code{font-size:11px;padding:7px 6px}.top{gap:6px}.status,.age{font-size:10px}.top .muted{font-size:11px}}
   </style>
 </head>
 <body><main>
-  <header class="top"><div><h1>📈 00403A 行情與預測</h1><div class="muted" id="target">正在讀取資料…</div></div><div class="status"><span id="status">● 連線中</span><span class="age" id="update-age">資料更新計時中…</span></div></header>
-  <section class="grid">
+  <header class="top"><div class="instrument"><span class="instrument-code">00403A</span><div><h1>主動統一升級50</h1><div class="muted" id="target">等待預測資料</div></div></div><div class="status" id="quote-status"><span id="status">● 讀取資料</span><span class="age" id="update-age">等待更新</span></div></header>
+  <section class="grid overview" aria-label="行情摘要">
     <div class="card metric"><div class="label">最新股價</div><div class="value" id="price">—</div><div class="sub" id="quote-time">等待報價</div></div>
     <div class="card metric"><div class="label">今日漲跌</div><div class="value" id="change">—</div><div class="sub">依前一收盤價計算</div></div>
     <div class="card metric"><div class="label">今日估計成交量</div><div class="value" id="volume">—</div><div class="sub">元大 API 回傳單位</div></div>
-    <div class="card metric"><div class="label">明日預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">模型估計，不保證準確</div></div>
+    <div class="card metric"><div class="label" id="forecast-label">預測收盤中位數</div><div class="value" id="forecast">—</div><div class="sub" id="forecast-band">等待估計區間</div></div>
   </section>
-  <section class="card callout"><div class="muted">路徑圖參考方法</div><strong>歷史相似交易日（輔助參考）</strong><div class="note" id="model-note"></div></section>
-  <section class="card"><h2>機器學習預測｜Ridge 回歸</h2><div class="grid"><div class="metric"><div class="label">下一交易日預測報酬</div><div class="value" id="ml-return">—</div></div><div class="metric"><div class="label">預測收盤估值</div><div class="value" id="ml-close">—</div></div><div class="metric"><div class="label">逐日回測 MAE</div><div class="value" id="ml-mae">—</div></div><div class="metric"><div class="label">簡單基準 MAE</div><div class="value" id="ml-base">—</div></div></div><div class="decision" id="ml-verdict">等待模型資料</div><div class="note" id="ml-details">以過去可得特徵逐日訓練與測試；資料不足或誤差未勝過基準時，不提供方向判斷。</div><div id="ml-chart" class="chart-small"></div></section>
-  <section class="card">
+  <nav class="dashboard-nav" aria-label="行情工作區"><div class="dashboard-nav-inner">
+    <button type="button" data-view="market" aria-pressed="true" aria-controls="market-panel">走勢</button>
+    <button type="button" data-view="signals" aria-pressed="false" aria-controls="signals-panel">訊號</button>
+    <button type="button" data-view="backtest" aria-pressed="false" aria-controls="backtest-panel">回測</button>
+    <button type="button" data-view="technical" aria-pressed="false" aria-controls="technical-panel">技術</button>
+  </div></nav>
+  <section class="card" id="signals-panel" data-panel="signals" hidden>
     <h2>盤中波動訊號</h2>
     <div class="decision" id="intraday-summary">等待元大盤中報價</div>
     <div class="muted" id="intraday-status">訊號只作風險提醒，不是買賣指令。</div>
-    <ul class="reasons" id="intraday-items"></ul>
-    <div class="decision" id="opening-summary">09:15 更新 · 等待發布器資料</div>
-    <div class="note" id="opening-validation">使用開盤後前三根完整的 5 分 K，保留開盤前的預測。</div>
+    <ul class="reasons signal-list" id="intraday-items"></ul>
+    <div class="opening-result">
+      <div class="decision" id="opening-summary">09:15 更新 · 等待發布器資料</div>
+      <div class="note" id="opening-validation">使用開盤後前三根完整的 5 分 K，保留開盤前的預測。</div>
+    </div>
   </section>
-  <section class="card"><h2>模型最近回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">回測只用預測日前的資料，並和「價格維持前一收盤價」比較。誤差越小越好。</div></section>
-  <section class="card"><h2>訊號與風險說明</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">依歷史誤差與樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">若模型未在歷史回測中勝過簡單基準，網站會標示不提供買進或賣出方向。資料不含新聞、ETF 折溢價、成分股資金流及個人持倉。</div></section>
-  <section class="card">
+  <section class="card" data-panel="signals" hidden><h2>訊號與風險說明</h2><span class="confidence" id="confidence-level">等待資料</span><div class="muted" id="confidence-note">依歷史誤差與樣本數整理，不是漲跌正確率。</div><div class="decision" id="analysis-stance">尚無操作方向參考</div><ul class="reasons" id="analysis-reasons"></ul><div class="note">資料不含新聞、ETF 折溢價、成分股資金流及個人持倉。</div></section>
+  <section class="card" id="backtest-panel" data-panel="backtest" hidden><h2>機器學習預測｜Ridge 回歸</h2><div class="grid"><div class="metric"><div class="label">下一交易日預測報酬</div><div class="value" id="ml-return">—</div></div><div class="metric"><div class="label">預測收盤估值</div><div class="value" id="ml-close">—</div></div><div class="metric"><div class="label">逐日回測 MAE</div><div class="value" id="ml-mae">—</div></div><div class="metric"><div class="label">簡單基準 MAE</div><div class="value" id="ml-base">—</div></div></div><div class="decision" id="ml-verdict">等待模型資料</div><div class="note" id="ml-details">等待績效資料</div><div id="ml-chart" class="chart-small"></div></section>
+  <section class="card" data-panel="backtest" hidden><h2>歷史相似日模型回測</h2><div class="decision" id="validation-summary">累積資料中，暫時無法驗證模型表現。</div><div class="note" id="validation-detail">比較逐時價格誤差和前收不變基準。</div></section>
+  <section class="card" id="market-panel" data-panel="market">
     <h2>股價走勢與預測</h2>
     <div class="session-controls" role="group" aria-label="選擇交易日圖表">
       <button type="button" id="show-comparison" aria-pressed="true" aria-controls="compare-chart">當日對照</button>
@@ -63,7 +94,8 @@
     <div id="compare-legend" class="session-legend"></div>
     <div id="compare-chart" class="chart"></div>
   </section>
-  <section class="card"><h2>K 線、成交量與 MACD</h2><div class="muted" id="technical-caption">使用元大歷史 5 分 K 合併日 K；含 MA5/MA20、MACD(12,26,9)、RSI14。ETF 淨值、折溢價與持倉目前未接入。</div><div id="kline-chart" class="chart"></div><div id="macd-chart" class="chart-small"></div><div class="note" id="technical-summary">等待技術分析資料</div></section>
+  <details class="card subtle-details" data-panel="market"><summary>預測方法與資料來源</summary><div class="note" id="model-note"></div></details>
+  <section class="card" id="technical-panel" data-panel="technical" hidden><h2>K 線、成交量與 MACD</h2><div class="muted" id="technical-caption">等待技術分析資料</div><div id="kline-chart" class="chart"></div><div id="macd-chart" class="chart-small"></div><div class="note" id="technical-summary">等待技術分析資料</div></section>
   <p class="note warn">這是歷史資料模型的估算與行情展示，不是獲利保證或個人化投資建議。</p>
   <p class="note" id="updated">—</p>
 </main>
@@ -73,9 +105,11 @@ function dataUrl(){
   if(owner){const repo=parts[0]||`${owner}.github.io`;return `https://raw.githubusercontent.com/${owner}/${repo}/main/mobile_dashboard/data.json`;}
   return new URL('./data.json',location.href).href;
 }
-const fmt = (v,n=2)=>Number.isFinite(Number(v))?Number(v).toFixed(n):'—';
-const fmtVol = v=>Number.isFinite(Number(v))?Math.round(Number(v)).toLocaleString('zh-TW'):'—';
+const hasNumber=v=>v!=null&&v!==''&&Number.isFinite(Number(v));
+const fmt = (v,n=2)=>hasNumber(v)?Number(v).toFixed(n):'—';
+const fmtVol = v=>hasNumber(v)?Math.round(Number(v)).toLocaleString('zh-TW'):'—';
 let publishedAtMs=null;
+let dataUnavailable=false;
 function parsePublishedAt(data){
   const epoch=Number(data.updated_at_epoch);
   if(Number.isFinite(epoch)&&epoch>0)return epoch*1000;
@@ -90,10 +124,41 @@ function renderUpdateAge(){
   const total=Math.max(0,Math.floor((Date.now()-publishedAtMs)/1000));
   const hours=Math.floor(total/3600),minutes=Math.floor((total%3600)/60),seconds=total%60;
   el.textContent=hours?`距資料更新 ${hours}小時 ${minutes}分 ${seconds}秒`:minutes?`距資料更新 ${minutes}分 ${seconds}秒`:`距資料更新 ${seconds}秒`;
+  const status=document.getElementById('status');
+  const delayed=dataUnavailable||total>=900;
+  status.textContent=dataUnavailable?'● 沿用上次資料':delayed?'● 較早的快照':'● 資料已載入';
+  document.getElementById('quote-status').dataset.state=delayed?'delayed':'current';
 }
 const chartLayout={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{color:'#cbd8ea',size:12},margin:{l:48,r:14,t:15,b:40},xaxis:{gridcolor:'#24344e',title:'時間'},yaxis:{gridcolor:'#24344e',title:'價格（元）'},legend:{orientation:'h',y:1.12},autosize:true};
 const touchScreen=matchMedia('(pointer: coarse)');
 const narrowScreen=matchMedia('(max-width: 699px)');
+const chartJobs=new Map();
+let chartFrame=0;
+function showCharts(){
+  if(chartFrame)return;
+  chartFrame=requestAnimationFrame(()=>{
+    chartFrame=0;
+    if(!window.Plotly)return;
+    for(const [id,{traces,options,config}] of chartJobs){
+      const element=document.getElementById(id);
+      if(!element.closest('[hidden]')){
+        chartJobs.delete(id);
+        Plotly.react(element,traces,options,config);
+      }
+    }
+  });
+}
+document.getElementById('plotly-library').addEventListener('load',showCharts);
+const viewButtons=[...document.querySelectorAll('[data-view]')];
+const panels=[...document.querySelectorAll('[data-panel]')];
+for(const button of viewButtons){
+  button.addEventListener('click',()=>{
+    const view=button.dataset.view;
+    for(const item of viewButtons)item.setAttribute('aria-pressed',String(item===button));
+    for(const panel of panels)panel.hidden=panel.dataset.panel!==view;
+    showCharts();
+  });
+}
 function draw(id,traces,layout){
   const options={...chartLayout,...layout,dragmode:false};
   for(const axis of ['xaxis','yaxis','yaxis2']){
@@ -104,9 +169,11 @@ function draw(id,traces,layout){
     options.margin={...options.margin,l:42,r:id==='kline-chart'?42:14,t:53,b:40};
     options.legend={orientation:'h',x:0,y:1.03,yanchor:'bottom',font:{size:10},itemwidth:22};
   }
-  Plotly.react(id,traces,options,{
+  const config={
     responsive:true,displayModeBar:false,scrollZoom:false,doubleClick:false,staticPlot:touchScreen.matches
-  });
+  };
+  chartJobs.set(id,{traces,options,config});
+  showCharts();
 }
 
 const sessionStart=9*60,sessionEnd=13*60+30;
@@ -208,16 +275,20 @@ for(const [id,view] of [['show-comparison','compare'],['show-forecast','forecast
 document.getElementById('show-opening').addEventListener('change',renderSessionChart);
 async function refresh(){try{
   const res=await fetch(dataUrl()+'?t='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('資料尚未發布'); const d=await res.json();
+  dataUnavailable=false;
   publishedAtMs=parsePublishedAt(d);renderUpdateAge();
   const q=d.latest_quote||{}; document.getElementById('price').textContent=fmt(q.price);
   document.getElementById('quote-time').textContent=q.time?`${q.source||'報價'}：${q.time}`:'尚無報價資料';
-  const pct=Number(d.today_change_pct);document.getElementById('change').textContent=Number.isFinite(pct)?(pct>=0?'+':'')+pct.toFixed(2)+'%':'—';
+  const pct=Number(d.today_change_pct), change=document.getElementById('change');
+  change.textContent=hasNumber(d.today_change_pct)?(pct>=0?'+':'')+pct.toFixed(2)+'%':'—';
+  change.dataset.direction=pct>0?'up':pct<0?'down':'flat';
   document.getElementById('volume').textContent=fmtVol(d.today_estimated_volume);
   const f=d.next_day_forecast||{};document.getElementById('forecast').textContent=fmt(f.close_median);
+  document.getElementById('forecast-label').textContent=f.target_date?`${f.target_date.slice(5)} 預測收盤`:'預測收盤中位數';
   document.getElementById('forecast-band').textContent=f.close_low!=null?`估計區間 ${fmt(f.close_low)}～${fmt(f.close_high)} 元`:'模型資料累積中';
   document.getElementById('model-note').textContent=d.model_note||'';
   const ml=d.ml_model||{},mb=ml.backtest||{};
-  document.getElementById('ml-return').textContent=Number.isFinite(Number(ml.forecast_return_pct))?(Number(ml.forecast_return_pct)>=0?'+':'')+fmt(ml.forecast_return_pct,2)+'%':'資料不足';
+  document.getElementById('ml-return').textContent=hasNumber(ml.forecast_return_pct)?(Number(ml.forecast_return_pct)>=0?'+':'')+fmt(ml.forecast_return_pct,2)+'%':'資料不足';
   document.getElementById('ml-close').textContent=ml.forecast_close==null?'—':fmt(ml.forecast_close)+' 元';
   document.getElementById('ml-mae').textContent=mb.mae==null?'資料不足':fmt(mb.mae*100,3)+'%';
   document.getElementById('ml-base').textContent=mb.baseline_mae==null?'—':fmt(mb.baseline_mae*100,3)+'%';
@@ -255,7 +326,7 @@ async function refresh(){try{
   document.getElementById('analysis-stance').textContent=a.stance||'資料不足，暫不提供方向參考。';
   const reasonList=document.getElementById('analysis-reasons');reasonList.replaceChildren();
   (a.reasons||[]).forEach(reason=>{const item=document.createElement('li');item.textContent=reason;reasonList.appendChild(item);});
-  document.getElementById('target').textContent=`預測日期：${f.target_date||'資料累積中'}　｜　標的：00403A`;
+  document.getElementById('target').textContent=f.target_date?`預測日期 ${f.target_date}`:'等待預測資料';
   chartData=d;
   renderSessionChart();
   const ta=d.technical_analysis||{},bars=ta.candles||[],dates=bars.map(x=>x.date);
@@ -280,7 +351,10 @@ async function refresh(){try{
   const rsiText=ta.rsi14==null?'RSI14 資料不足':`RSI14 ${n(ta.rsi14)}${ta.rsi14>=70?'（偏熱區）':ta.rsi14<=30?'（偏弱區）':''}`;
   document.getElementById('technical-summary').textContent=`${maText}；${macdText}；${rsiText}。目前未接 ETF 淨值、折溢價、持倉與費用資料；指標只整理過去價格，不代表買賣保證。`;
   document.getElementById('updated').textContent='資料更新時間：'+(d.updated_at||'尚無')+'　｜　網頁每 60 秒自動重讀';
-  document.getElementById('status').textContent='● 資料已載入';
-}catch(e){document.getElementById('status').textContent='資料暫時無法讀取';document.getElementById('model-note').textContent=e.message}}
+}catch(e){
+  dataUnavailable=true;
+  document.getElementById('status').textContent=publishedAtMs===null?'● 資料暫時無法讀取':'● 沿用上次資料';
+  document.getElementById('quote-status').dataset.state='delayed';
+}}
 refresh();setInterval(refresh,60000);setInterval(renderUpdateAge,1000);
 </script></body></html>
